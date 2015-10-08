@@ -56,12 +56,11 @@ def genCharacterReport(mainFrame, sp):
 
         return
 
-    charNames = []
-    for s in util.listify(report.cinfo, "name"):
-        charNames.append(misc.CheckBoxItem(s))
+    charNames = [character.name for character in report.cinfo]
+    charCheckBoxItems = list([misc.CheckBoxItem(name) for name in charNames])
 
     dlg = misc.CheckBoxDlg(mainFrame, "Report type", report.inf,
-        "Information to include:", False, charNames,
+        "Information to include:", False, charCheckBoxItems,
         "Characters to include:", True)
 
     ok = False
@@ -69,7 +68,7 @@ def genCharacterReport(mainFrame, sp):
         ok = True
 
         for i in range(len(report.cinfo)):
-            report.cinfo[i].include = charNames[i].selected
+            report.cinfo[i].include = charCheckBoxItems[i].selected
 
     dlg.Destroy()
 

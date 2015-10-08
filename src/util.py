@@ -226,15 +226,6 @@ def str2int(s, defVal, minVal = None, maxVal = None, radix = 10):
 
     return clamp(val, minVal, maxVal)
 
-# extract 'name' field from each item in 'seq', put it in a list, and
-# return that list.
-def listify(seq, name):
-    l = []
-    for it in seq:
-        l.append(getattr(it, name))
-
-    return l
-
 # return percentage of 'val1' of 'val2' (both ints) as an int (50% -> 50
 # etc.), or 0 if val2 is 0.
 def pct(val1, val2):
