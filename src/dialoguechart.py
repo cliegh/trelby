@@ -263,16 +263,15 @@ class DialogueChart:
         pg.add(pml.RectOp(self.chartX, self.barY, self.chartWidth,
                          self.barHeight, pml.NO_FILL, lw))
 
-        for i in range(len(self.cinfo)):
+        for i, character in enumerate(self.cinfo):
             y = self.chartY + i * self.charY
-            ci = self.cinfo[i]
 
-            pg.add(pml.TextOp(ci.name, self.margin, y + self.charY / 2.0,
+            pg.add(pml.TextOp(character.name, self.margin, y + self.charY / 2.0,
                 self.charFs, valign = util.VALIGN_CENTER))
 
             for i in xrange(pageCnt):
-                pi = self.pages[i]
-                cnt = pi.getSpeakerLineCount(ci.name)
+                page = self.pages[i]
+                cnt = page.getSpeakerLineCount(character.name)
 
                 if cnt > 0:
                     h = self.charY * (float(cnt) / self.sp.cfg.linesOnPage)
