@@ -243,27 +243,19 @@ class DialogueChart:
         for i in xrange(pageCnt):
             x = self.chartX + i * mmPerPage
             y = self.barY + self.barHeight
-            pi = self.pages[i]
-            tlc = pi.getTotalLineCount()
+            page = self.pages[i]
+            tlc = page.getTotalLineCount()
 
-            pg.add(pml.PDFOp("0.3 g"))
-            pct = util.safeDivInt(pi.getLineCount(screenplay.ACTION), tlc)
-            barH = self.barHeight * pct
-            pg.add(pml.RectOp(x, y - barH, mmPerPage, barH))
-            y -= barH
-
-            pg.add(pml.PDFOp("0.5 g"))
-            pct = util.safeDivInt(pi.getLineCount(screenplay.DIALOGUE), tlc)
-            barH = self.barHeight * pct
-            pg.add(pml.RectOp(x, y - barH, mmPerPage, barH))
-            y -= barH
-
-            pg.add(pml.PDFOp("0.7 g"))
-            pct = util.safeDivInt(pi.getLineCount(screenplay.CHARACTER), tlc)
-            barH = self.barHeight * pct
-            pg.add(pml.RectOp(x, y - barH, mmPerPage, barH))
-            y -= barH
-
+            if tlc <> 0:
+                for greyvalue, itemType in [
+                        (0.3, screenplay.ACTION),\
+                        (0.5, screenplay.DIALOGUE),\
+                        (0.7, screenplay.CHARACTER)]:
+                    pg.add(pml.PDFOp("%f g" % greyvalue))
+                    ratio = page.getLineCount(itemType) / tlc
+                    barH = self.barHeight * ratio
+                    pg.add(pml.RectOp(x, y - barH, mmPerPage, barH))
+                    y -= barH
 
         pg.add(pml.PDFOp("0.0 g"))
 
