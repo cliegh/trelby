@@ -1,13 +1,7 @@
 import fontinfo
 import pml
 import util
-
-# PDF transform matrixes where key is the angle from x-axis
-# in counter-clockwise direction.
-TRANSFORM_MATRIX = {
-    45 : (1, 1, -1, 1),
-    90 : (0, 1, -1, 0),
-}
+import math
 
 # users should only use this.
 def generate(doc):
@@ -44,23 +38,22 @@ class PDFTextOp(PDFDrawOp):
             output += "/%s Tf\n" % newFont
             pe.currentFont = newFont
 
-        if pmlOp.angle is not None:
-            matrix = TRANSFORM_MATRIX.get(pmlOp.angle)
+	try:
+            radians = math.radians(pmlOp.angle)
+	except TypeError:
+            radians = 0.0
 
-            if matrix:
-                output += "BT\n"\
-                    "%f %f %f %f %f %f Tm\n"\
-                    "(%s) Tj\n"\
-                    "ET\n" % (matrix[0], matrix[1], matrix[2], matrix[3],
-                              x, y, pe.escapeStr(pmlOp.text))
-            else:
-                # unsupported angle, don't print it.
-                pass
+	if radians == 0.0:
+            transformStr = "%f %f Td" % (x, y)
         else:
-            output += "BT\n"\
-                "%f %f Td\n"\
-                "(%s) Tj\n"\
-                "ET\n" % (x, y, pe.escapeStr(pmlOp.text))
+            transformStr = "%f %f %f %f %f %f Tm"\
+                    % (math.cos(radians), math.sin(radians),\
+		       - math.sin(radians), math.cos(radians), x, y)
+
+        output += "BT\n"\
+                  "%s\n"\
+                  "(%s) Tj\n"\
+                  "ET\n" % (transformStr, pe.escapeStr(pmlOp.text))
 
         if pmlOp.flags & pml.UNDERLINED:
 
