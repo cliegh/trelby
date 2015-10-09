@@ -3,3 +3,5 @@
 .trelby/
 *.py~
 *.swp
+dist/
+build/
