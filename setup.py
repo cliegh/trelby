@@ -124,6 +124,7 @@ options = {
         "compressed": 1,
         "optimize": 2,
         "includes": includes,
+	"dll_excludes": ["MSVCP90.dll"]
     }
 }
 
