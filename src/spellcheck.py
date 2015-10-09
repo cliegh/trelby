@@ -51,7 +51,7 @@ class Dict:
             v = self.__class__.cvars = mypickle.Vars()
 
             v.addList("wordsList", [], "Words",
-                      mypickle.StrLatin1Var("", "", ""))
+                      mypickle.StrUnicodeVar("", "", ""))
 
             v.makeDicts()
 

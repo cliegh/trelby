@@ -172,7 +172,6 @@ class Screenplay:
 
         output = util.String()
 
-        output += codecs.BOM_UTF8
         output += "#Version 3\n"
 
         output += "#Begin-Auto-Completion \n"
@@ -206,10 +205,10 @@ class Screenplay:
 
         output += "#Start-Script \n"
 
-        for i in xrange(len(self.lines)):
-            output += util.toUTF8(str(self.lines[i]) + "\n")
+        for line in self.lines:
+            output += (line.__str__() + "\n")
 
-        return str(output)
+        return codecs.BOM_UTF8 + unicode(output).encode("utf-8")
 
     # load script from string s and return a (Screenplay, msg) tuple,
     # where msgs is string (possibly empty) of warnings about the loading
@@ -220,7 +219,7 @@ class Screenplay:
         if s[0:3] != codecs.BOM_UTF8:
             raise error.MiscError("File is not a Trelby screenplay.")
 
-        lines = s[3:].splitlines()
+        lines = s[3:].decode("utf-8").splitlines()
 
         sp = Screenplay(cfgGl)
 
@@ -325,7 +324,7 @@ class Screenplay:
 
                 lb = config.char2lb(s[0], False)
                 lt = config.char2lt(s[1], False)
-                text = util.toInputStr(util.fromUTF8(s[2:]))
+                text = s[2:]
 
                 # convert unknown lb types into LB_SPACE
                 if lb == None:
@@ -524,7 +523,7 @@ Generated with <a href="http://www.trelby.org">Trelby</a>.</p>
                 for s in ts.items:
                     para = etree.SubElement(content, "p")
                     para.set("class", "title")
-                    para.text = unicode(s, "ISO-8859-1")
+                    para.text = s
 
             para = etree.SubElement(content, "p")
             para.set("class", "title")
@@ -558,7 +557,7 @@ Generated with <a href="http://www.trelby.org">Trelby</a>.</p>
             # and now the line text
             para = etree.SubElement(content, "pre")
             para.set("class", htmlMap[line.lt])
-            para.text = unicode(text, "ISO-8859-1")
+            para.text = text
 
         bodyText = etree.tostring(content, encoding='UTF-8', pretty_print=True)
 
@@ -624,7 +623,7 @@ Generated with <a href="http://www.trelby.org">Trelby</a>.</p>
                 para.set("Type", xmlMap[typ])
 
             paratxt = etree.SubElement(para, "Text")
-            paratxt.text = unicode(txt, "ISO-8859-1")
+            paratxt.text = txt
 
         # FD does not recognize "New Act" by default. It needs an
         # ElementSettings element added.
@@ -705,7 +704,7 @@ Generated with <a href="http://www.trelby.org">Trelby</a>.</p>
 
             flines.append(txt)
 
-        return util.toUTF8("\n".join(flines))
+        return "\n".join(flines).encode("utf-8")
 
     # generate RTF and return it as a string.
     def generateRTF(self):
@@ -2402,7 +2401,7 @@ Generated with <a href="http://www.trelby.org">Trelby</a>.</p>
                 msg = "Empty line."
                 break
 
-            if (len(ln.text.strip("  ")) == 0) and (ln.lt != NOTE):
+            if (len(ln.text.strip(u"  ")) == 0) and (ln.lt != NOTE):
                 msg = "Empty line (contains only spaces)."
                 break
 
@@ -2959,10 +2958,10 @@ Generated with <a href="http://www.trelby.org">Trelby</a>.</p>
         if len(char) != 1:
             return
 
-        kc = ord(char)
-
-        if not util.isValidInputChar(kc):
+        if not util.isValidInputChar(char):
             return
+
+        kc = ord(char)
 
         isSpace = char == " "
 
@@ -3002,7 +3001,7 @@ Generated with <a href="http://www.trelby.org">Trelby</a>.</p>
                 u = undo.SinglePara(self, undo.CMD_ADD_CHAR, self.line)
 
         if self.capitalizeNeeded():
-            char = util.upper(char)
+            char = char.upper()
 
         ls = self.lines
         s = ls[self.line].text
@@ -3011,11 +3010,11 @@ Generated with <a href="http://www.trelby.org">Trelby</a>.</p>
             s = ls[self.line].text
 
             if s[self.column - 1] == "i":
-                if not util.isAlnum(char):
+                if not char.isalpha():
                     doIt = False
 
                     if self.column > 1:
-                        if not util.isAlnum(s[self.column - 2]):
+                        if not s[self.column - 2].isalpha():
                             doIt = True
                     else:
                         if (self.line == 0) or \
@@ -3227,7 +3226,7 @@ Generated with <a href="http://www.trelby.org">Trelby</a>.</p>
 
 # one line in a screenplay
 class Line:
-    def __init__(self, lb = LB_LAST, lt = ACTION, text = ""):
+    def __init__(self, lb = LB_LAST, lt = ACTION, text = u""):
 
         # line break type
         self.lb = lb

@@ -134,8 +134,7 @@ class Font:
             tmp = unpack("%ds" % strLen,
                                  s2[strOffset : strOffset + strLen])[0]
 
-            self.psName = tmp.decode("UTF-16BE", "ignore").encode(
-                "ISO-8859-1", "ignore")
+            self.psName = tmp.decode("UTF-16BE", "ignore")
 
             return True
 

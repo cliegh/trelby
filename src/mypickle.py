@@ -17,7 +17,7 @@ class Vars:
         self.all = self.getDict()
         self.color = self.getDict(ColorVar)
         self.numeric = self.getDict(NumericVar)
-        self.stringLatin1 = self.getDict(StrLatin1Var)
+        self.stringUnicode = self.getDict(StrUnicodeVar)
 
     # return dictionary containing given type of variable objects, or all
     # if typeObj is None.
@@ -99,9 +99,6 @@ class Vars:
     def addInt(self, *params):
         self.addVar(IntVar(*params))
 
-    def addStrLatin1(self, *params):
-        self.addVar(StrLatin1Var(*params))
-
     def addStrUnicode(self, *params):
         self.addVar(StrUnicodeVar(*params))
 
@@ -178,17 +175,6 @@ class IntVar(NumericVar):
 
     def fromStr(self, vals, val, prefix):
         return util.str2int(val, self.defVal, self.minVal, self.maxVal)
-
-# ISO-8859-1 (Latin 1) string.
-class StrLatin1Var(ConfVar):
-    def __init__(self, name, defVal, name2):
-        ConfVar.__init__(self, name, defVal, name2)
-
-    def toStr(self, val, prefix):
-        return "%s:%s\n" % (prefix, util.toUTF8(val))
-
-    def fromStr(self, vals, val, prefix):
-        return util.fromUTF8(val)
 
 # Unicode string.
 class StrUnicodeVar(ConfVar):

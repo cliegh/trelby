@@ -10,6 +10,7 @@ import os
 import re
 import tempfile
 import time
+import unicodedata
 
 import StringIO
 
@@ -51,16 +52,9 @@ _iso_8859_1_map = {
 _to_upper = ""
 _to_lower = ""
 
-# translate table for converting strings to only contain valid input
-# characters
-_input_tbl = ""
-
 # translate table that converts A-Z -> a-z, keeps a-z as they are, and
 # converts everything else to z.
 _normalize_tbl = ""
-
-# identity table that maps each character to itself. used by deleteChars.
-_identity_tbl = ""
 
 # map some fancy unicode characters to their nearest ASCII/Latin-1
 # equivalents so when people import text it's not mangled to uselessness
@@ -77,8 +71,7 @@ _fancy_unicode_map = {
 permDc = None
 
 def init(doWX = True):
-    global _to_upper, _to_lower, _input_tbl, _normalize_tbl, _identity_tbl, \
-           permDc
+    global _to_upper, _to_lower, _normalize_tbl, permDc
 
     # setup ISO-8859-1 case-conversion stuff
     tmpUpper = []
@@ -96,13 +89,6 @@ def init(doWX = True):
         _to_upper += chr(tmpUpper[i])
         _to_lower += chr(tmpLower[i])
 
-    # valid input string stuff
-    for i in range(256):
-        if isValidInputChar(i):
-            _input_tbl += chr(i)
-        else:
-            _input_tbl += "|"
-
     for i in range(256):
         # "a" - "z"
         if (i >= 97) and (i <= 122):
@@ -116,8 +102,6 @@ def init(doWX = True):
 
         _normalize_tbl += ch
 
-    _identity_tbl = "".join([chr(i) for i in range(256)])
-
     if doWX:
         # dunno if the bitmap needs to be big enough to contain the text
         # we're measuring...
@@ -127,42 +111,24 @@ def init(doWX = True):
 # like string.upper/lower/capitalize, but we do our own charset-handling
 # that doesn't need locales etc
 def upper(s):
-    return s.translate(_to_upper)
+    #TODO: Factor this out
+    return s.upper()
 
 def lower(s):
-    return s.translate(_to_lower)
+    #TODO: Factor this out
+    return s.lower()
 
 def capitalize(s):
     return upper(s[:1]) + s[1:]
 
-# return 's', which must be a unicode string, converted to a ISO-8859-1
-# 8-bit string. characters not representable in ISO-8859-1 are discarded.
-def toLatin1(s):
-    return s.encode("ISO-8859-1", "ignore")
+# returns True if unichar is a valid character to add to the script.
+def isValidInputChar(unichar):
+    return not unicodedata.category(unichar).startswith("C")
 
-# return 's', which must be a string of ISO-8859-1 characters, converted
-# to UTF-8.
-def toUTF8(s):
-    return unicode(s, "ISO-8859-1").encode("UTF-8")
-
-# return 's', which must be a string of UTF-8 characters, converted to
-# ISO-8859-1, with characters not representable in ISO-8859-1 discarded
-# and any invalid UTF-8 sequences ignored.
-def fromUTF8(s):
-    return s.decode("UTF-8", "ignore").encode("ISO-8859-1", "ignore")
-
-# returns True if kc (key-code) is a valid character to add to the script.
-def isValidInputChar(kc):
-    # [0x80, 0x9F] = unspecified control characters in ISO-8859-1, added
-    # characters like euro etc in windows-1252. 0x7F = backspace, 0xA0 =
-    # non-breaking space, 0xAD = soft hyphen.
-    return (kc >= 32) and (kc <= 255) and not\
-           ((kc >= 0x7F) and (kc < 0xA0)) and (kc != 0xAD)
-
-# return s with all non-valid input characters converted to valid input
-# characters, except form feeds, which are just deleted.
+# return s with all non-valid input characters removed
 def toInputStr(s):
-    return s.translate(_input_tbl, "\f")
+    #print "toInputStr(%s)" % repr(s)
+    return u"".join([unichar for unichar in s if isValidInputChar(unichar)])
 
 # replace fancy unicode characters with their ASCII/Latin1 equivalents.
 def removeFancyUnicode(s):
@@ -171,15 +137,11 @@ def removeFancyUnicode(s):
 # transform external input (unicode) into a form suitable for having in a
 # script
 def cleanInput(s):
-    return toInputStr(toLatin1(removeFancyUnicode(s)))
+    return toInputStr(removeFancyUnicode(s))
 
 # replace s[start:start + width] with toInputStr(new) and return s
 def replace(s, new, start, width):
     return s[0 : start] + toInputStr(new) + s[start + width:]
-
-# delete all characters in 'chars' (a string) from s and return that.
-def deleteChars(s, chars):
-    return s.translate(_identity_tbl, chars)
 
 # returns s with all possible different types of newlines converted to
 # unix newlines, i.e. a single "\n"
@@ -402,7 +364,7 @@ def getTextExtent(font, s):
 # get height of font in pixels
 def getFontHeight(font):
     permDc.SetFont(font)
-    return permDc.GetTextExtent("_\xC5")[1]
+    return permDc.GetTextExtent(u"_\u00c5")[1]
 
 # return how many mm tall given font size is.
 def getTextHeight(size):
@@ -424,8 +386,7 @@ def createPixelFont(height, family, style, weight):
     # FIXME: what's this "keep trying even once we go over the max height"
     # stuff? get rid of it.
     while 1:
-        fn = wx.Font(fs, family, style, weight,
-                     encoding = wx.FONTENCODING_ISO8859_1)
+        fn = wx.Font(fs, family, style, weight)
         h = getFontHeight(fn)
         diff = height -h
 
@@ -441,8 +402,7 @@ def createPixelFont(height, family, style, weight):
 
         fs += 2
 
-    return wx.Font(selected, family, style, weight,
-                   encoding = wx.FONTENCODING_ISO8859_1)
+    return wx.Font(selected, family, style, weight)
 
 def reverseComboSelect(combo, clientData):
     for i in range(combo.GetCount()):
@@ -484,11 +444,7 @@ def isWordBoundary(c):
     if c == "'":
         return False
 
-    return not isAlnum(c)
-
-# return True if c is an alphanumeric character
-def isAlnum(c):
-    return unicode(c, "ISO-8859-1").isalnum()
+    return not c.isalnum()
 
 # make sure s (unicode) ends in suffix (case-insensitively) and return
 # that. suffix must already be lower-case.
@@ -769,7 +725,8 @@ class Key:
 
     # returns True if key is a valid input character
     def isValidInputChar(self):
-        return not self.ctrl and not self.alt and isValidInputChar(self.kc)
+        return False
+        #return not self.ctrl and not self.alt and isValidInputChar(unichr(self.kc))
 
     # toInt/fromInt serialize/deserialize to/from a 35-bit integer, laid
     # out like this:
@@ -805,11 +762,8 @@ class Key:
         if self.shift:
             s += "SHIFT+"
 
-        if isValidInputChar(self.kc):
-            if self.kc == wx.WXK_SPACE:
-                s += "Space"
-            else:
-                s += chr(self.kc)
+        if isValidInputChar(unichr(self.kc)):
+            s += ("Space" if self.kc == wx.WXK_SPACE else chr(self.kc))
         else:
             kname = self.__class__.keyMap.get(self.kc)
 
@@ -842,7 +796,7 @@ class String:
         return "".join(self.data)
 
     def __iadd__(self, s):
-        s2 = str(s)
+        s2 = s
 
         self.data.append(s2)
         self.pos += len(s2)

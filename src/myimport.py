@@ -465,14 +465,10 @@ def importFountain(fileName, frame):
     importSectSyn = inf[2].selected
 
     # pre-process data - fix newlines, remove boneyard.
+    data = data.decode("utf-8")
     data = util.fixNL(data)
     data = boneyard_re.sub('', data)
     prelines = data.split("\n")
-    for i in xrange(len(prelines)):
-        try:
-            util.toLatin1(prelines[i])
-        except:
-            prelines[i] = util.cleanInput(u"" + prelines[i].decode('UTF-8', "ignore"))
     lines = []
 
     tabWidth = 4

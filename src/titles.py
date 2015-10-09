@@ -162,7 +162,7 @@ class TitleString:
     #
     # sample of the format: '0.000000,70.000000,24,cb,Helvetica,,text here'
     def load(self, s):
-        a = util.fromUTF8(s).split(",", 6)
+        a = s.split(",", 6)
 
         if len(a) != 7:
             return
@@ -182,7 +182,7 @@ class TitleString:
         self.items = util.unescapeStrings(a[6])
 
     def __str__(self):
-        s = "%f,%f,%d," % (self.x, self.y, self.size)
+        s = u"%f,%f,%d," % (self.x, self.y, self.size)
 
         s += util.bools2flags("crbiu", self.isCentered, self.isRightJustified, self.isBold,
                                self.isItalic, self.isUnderlined)
@@ -195,6 +195,6 @@ class TitleString:
         else:
             s += "Times"
 
-        s += ",,%s" % util.escapeStrings(self.items)
+        s += u",,%s" % util.escapeStrings(self.items)
 
-        return util.toUTF8(s)
+        return s

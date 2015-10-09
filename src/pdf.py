@@ -511,7 +511,7 @@ class PDFExporter:
 
     # escape string
     def escapeStr(self, s):
-        return s.replace("\\", "\\\\").replace("(", "\\(").replace(")", "\\)")
+        return s.encode("latin_1","xmlcharrefreplace").replace("\\", "\\\\").replace("(", "\\(").replace(")", "\\)")
 
     # convert mm to points (1/72 inch).
     def mm2points(self, mm):

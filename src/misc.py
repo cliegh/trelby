@@ -83,7 +83,9 @@ def getPathFromRegistry():
 # convert s, which is returned from the wxWidgets GUI and is an Unicode
 # string, to a normal string.
 def fromGUI(s):
-    return s.encode("ISO-8859-1", "ignore")
+    #TODO: factor this function out everywhere
+    return s
+    #return s.encode("ISO-8859-1", "ignore")
 
 # convert s, which is an Unicode string, to an object suitable for passing
 # to Python's file APIs. this is either the Unicode string itself, if the
@@ -499,7 +501,7 @@ class MyTabCtrl(wx.Window):
 
             dc.DestroyClippingRegion()
             dc.SetFont(self.boldFont)
-            dc.DrawText("×", xpos + tabW - self.paddingX * 2, self.textY)
+            dc.DrawText(u"\u00d7", xpos + tabW - self.paddingX * 2, self.textY)
 
             xpos += tabW
 

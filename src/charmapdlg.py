@@ -36,7 +36,7 @@ class MyCharMap(wx.Window):
         self.chars = ""
 
         for i in xrange(256):
-            if util.isValidInputChar(i):
+            if util.isValidInputChar(unichr(i)):
                 self.chars += chr(i)
 
         self.cols = 16

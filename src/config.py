@@ -293,7 +293,7 @@ class PDFFontInfo:
     cvars = None
 
     # list of characters not allowed in pdfNames
-    invalidChars = None
+    allowedChars = None
 
     def __init__(self, name, style):
         # our name for the font (one of the PDF_FONT_* constants)
@@ -307,7 +307,7 @@ class PDFFontInfo:
 
             # name to use in generated PDF file (CourierNew, MyFontBold,
             # etc.). if empty, use the default PDF Courier font.
-            v.addStrLatin1("pdfName", "", "Name")
+            v.addStrUnicode("pdfName", "", "Name")
 
             # filename for the font to embed, or empty meaning don't
             # embed.
@@ -322,11 +322,11 @@ class PDFFontInfo:
                 # contains the most detailed discussion of characters
                 # allowed in Postscript font names, in the section on
                 # 'name' tables, describing name ID 6 (=Postscript name).
-                if (i <= 32) or (i >= 127) or chr(i) in (
-                    "[", "]", "(", ")", "{", "}", "<", ">", "/", "%"):
+                if not ((i <= 32) or (i >= 127) or chr(i) in (
+                    "[", "]", "(", ")", "{", "}", "<", ">", "/", "%")):
                     tmp += chr(i)
 
-            self.__class__.invalidChars = tmp
+            self.__class__.allowedChars = tmp
 
         self.__class__.cvars.setDefaults(self)
 
@@ -342,7 +342,7 @@ class PDFFontInfo:
 
     # fix up invalid values.
     def refresh(self):
-        self.pdfName = util.deleteChars(self.pdfName, self.invalidChars)
+        self.pdfName = u"".join([char for char in self.pdfName if (char in self.allowedChars)])
 
         # to avoid confused users not understanding why their embedded
         # font isn't working, put in an arbitrary font name if needed
@@ -503,12 +503,12 @@ class Config:
         v.addInt("cursorColumn", 0, "Cursor/Column", 0, 1000000)
 
         # various strings we add to the script
-        v.addStrLatin1("strMore", "(MORE)", "String/MoreDialogue")
-        v.addStrLatin1("strContinuedPageEnd", "(CONTINUED)",
+        v.addStrUnicode("strMore", u"(MORE)", "String/MoreDialogue")
+        v.addStrUnicode("strContinuedPageEnd", u"(CONTINUED)",
                        "String/ContinuedPageEnd")
-        v.addStrLatin1("strContinuedPageStart", "CONTINUED:",
+        v.addStrUnicode("strContinuedPageStart", u"CONTINUED:",
                        "String/ContinuedPageStart")
-        v.addStrLatin1("strDialogueContinued", " (cont'd)",
+        v.addStrUnicode("strDialogueContinued", u" (cont'd)",
                        "String/DialogueContinued")
 
         v.makeDicts()
@@ -557,7 +557,7 @@ class Config:
             for it in el.cvars.numeric.itervalues():
                 util.clampObj(el, it.name, it.minVal, it.maxVal)
 
-        for it in self.cvars.stringLatin1.itervalues():
+        for it in self.cvars.stringUnicode.itervalues():
             setattr(self, it.name, util.toInputStr(getattr(self, it.name)))
 
         for pf in self.pdfFonts.itervalues():
@@ -1369,8 +1369,7 @@ class ConfigGui:
             # font and use it. this sucks but is preferable to crashing or
             # displaying an empty screen.
             if not fi.font:
-                fi.font = wx.Font(10, wx.MODERN, wx.NORMAL, wx.NORMAL,
-                                  encoding = wx.FONTENCODING_ISO8859_1)
+                fi.font = wx.Font(10, wx.MODERN, wx.NORMAL, wx.NORMAL)
                 setattr(cfgGl, fname, fi.font.GetNativeFontInfo().ToString())
 
             fx, fy = util.getTextExtent(fi.font, "O")
