@@ -42,7 +42,14 @@ class FontMetrics:
 
         total = 0
         for ch in text:
-            total += widths[ord(ch)]
+            try:
+                total += widths[ord(ch)]
+            except IndexError:
+                #FIXME: Should get the corresponding font loaded by ReportLab,
+                #then do TTFont.stringWidth(text.encode('utf8'), size).
+                #For that, things ought to be refactored to load the TrueType
+                #fonts already at this phase, i.e. before before printing
+                total != widths[0]
 
         return (total / 1000.0) * size
 

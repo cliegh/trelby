@@ -28,7 +28,7 @@ HELVETICA = 8
 UNDERLINED = 16
 
 # fill types
-NO_FILL = 0
+STROKE = 0
 FILL = 1
 STROKE_FILL = 2
 
@@ -188,26 +188,45 @@ class RectOp(DrawOp):
 
 # Draw a quarter circle centered at (x, y) with given radius and line
 # width. By default it will be the upper left quadrant of a circle, but
-# using the flip[XY] parameters you can choose other quadrants.
+# using the startAngle parameter you can choose other quadrants.
 class QuarterCircleOp(DrawOp):
     pdfOp = pdf.PDFQuarterCircleOp()
 
-    def __init__(self, x, y, radius, width, flipX = False, flipY = False):
+    def __init__(self, x, y, radius, width, startAngle = 90):
         self.x = x
         self.y = y
         self.radius = radius
         self.width = width
-        self.flipX = flipX
-        self.flipY = flipY
+        self.startAngle = startAngle
 
-# Arbitrary PDF commands. Should not have whitespace in the beginning or
-# the end. Should be used only for non-critical things like tweaking line
-# join styles etc, because non-PDF renderers will ignore these.
-class PDFOp(DrawOp):
-    pdfOp = pdf.PDFArbitraryOp()
+# Set fill color to specified gray value
+class SetFillGray(DrawOp):
+    pdfOp = pdf.PDFSetFillGray()
 
-    def __init__(self, cmds):
-        self.cmds = cmds
+    def __init__(self, grayvalue):
+        self.grayvalue = grayvalue
+
+# Set fill color to specified RGB value, (R,G,B) tuple
+class SetFillRGB(DrawOp):
+    pdfOp = pdf.PDFSetFillRGB()
+
+    def __init__(self, color):
+        self.color = color
+
+# Set stroke color to specified gray value
+class SetStrokeGray(DrawOp):
+    pdfOp = pdf.PDFSetStrokeGray()
+
+    def __init__(self, grayvalue):
+        self.grayvalue = grayvalue
+
+# Set dash pattern
+class SetDash(DrawOp):
+    pdfOp = pdf.PDFSetDash()
+
+    def __init__(self, dashArray=[], phase=0):
+        self.dashArray = dashArray
+        self.phase = phase
 
 # create a PML document containing text (possibly linewrapped) divided
 # into pages automatically.

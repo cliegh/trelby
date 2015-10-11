@@ -982,7 +982,7 @@ Generated with <a href="http://www.trelby.org">Trelby</a>.</p>
                 if self.isFirstLineOfElem(i):
                     pg.add(pml.QuarterCircleOp(nx, ny, offset, lw))
                     pg.add(pml.genLine(nx, ny - offset, nw, 0.0, lw))
-                    pg.add(pml.QuarterCircleOp(nx + nw, ny, offset, lw, True))
+                    pg.add(pml.QuarterCircleOp(nx + nw, ny, offset, lw, 0))
 
                     pg.add(pml.TextOp("Note",
                         (nx + nx + nw) / 2.0, ny - offset, 6, pml.ITALIC,
@@ -990,10 +990,10 @@ Generated with <a href="http://www.trelby.org">Trelby</a>.</p>
 
                 if self.isLastLineOfElem(i):
                     pg.add(pml.QuarterCircleOp(nx, ny + chY, offset, lw,
-                                               False, True))
+                                               180))
                     pg.add(pml.genLine(nx, ny + chY + offset, nw, 0.0, lw))
                     pg.add(pml.QuarterCircleOp(nx + nw, ny + chY, offset, lw,
-                                               True, True))
+                                               270))
 
             if doExtra and (tcfg.lt == SCENE) and self.isFirstLineOfElem(i):
                 pager.sceneContNr = 0
@@ -2559,27 +2559,27 @@ Generated with <a href="http://www.trelby.org">Trelby</a>.</p>
                 pass
 
             elif s[0] == "2":
-                pg.add(pml.PDFOp("0.75 g"))
+                pg.add(pml.SetFillGray(0.75))
                 w = 50.0
                 pg.add(pml.RectOp(doc.w / 2.0 - w / 2.0, cfg.marginTop +
                     y * chY + chY / 4, w, chY / 2.0))
-                pg.add(pml.PDFOp("0.0 g"))
+                pg.add(pml.SetFillGray(0.0))
 
             else:
                 color = ""
 
                 if s[0] == "-":
-                    color = "1.0 0.667 0.667"
+                    color = (1.0,0.667,0.667)
                 elif s[0] == "+":
-                    color = "0.667 1.0 0.667"
+                    color = (0.667,1.0,0.667)
                 elif s[0] == "^":
-                    color = "1.0 1.0 0.467"
+                    color = (1.0,1.0,0.467)
 
                 if color:
-                    pg.add(pml.PDFOp("%s rg" % color))
+                    pg.add(pml.SetFillRGB(color))
                     pg.add(pml.RectOp(cfg.marginLeft, cfg.marginTop + y * chY,
                         doc.w - cfg.marginLeft - 5.0, chY))
-                    pg.add(pml.PDFOp("0.0 g"))
+                    pg.add(pml.SetFillGray(0.0))
 
                 textOps.append(pml.TextOp(s[1:], cfg.marginLeft,
                     cfg.marginTop + y * chY, cfg.fontSize))
