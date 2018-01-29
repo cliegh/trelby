@@ -1343,11 +1343,11 @@ class MyCtrl(wx.Control):
             if addChar:
                 cs.char = chr(kc)
 
-                if opts.isTest and (cs.char == "å"):
+                if opts.isTest and (cs.char == "?"):
                     self.loadFile(u"sample.trelby")
-                elif opts.isTest and (cs.char == "¤"):
+                elif opts.isTest and (cs.char == "?"):
                     self.cmdTest(cs)
-                elif opts.isTest and (cs.char == "½"):
+                elif opts.isTest and (cs.char == "?"):
                     self.cmdSpeedTest(cs)
                 else:
                     self.sp.addCharCmd(cs)
@@ -2645,10 +2645,10 @@ class MyApp(wx.App):
 
         return True
 
-def main():
-    global myApp
 
-    opts.init()
+global myApp
 
-    myApp = MyApp(0)
-    myApp.MainLoop()
+opts.init()
+
+myApp = MyApp(0)
+myApp.MainLoop()
