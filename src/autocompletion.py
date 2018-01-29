@@ -1,9 +1,11 @@
+# -*- coding: utf-8 -*-
 import config
 import mypickle
 import screenplay
 import util
 
 # manages auto completion information for a single script.
+# 관리 
 class AutoCompletion:
     def __init__(self):
         # type configs, key = line type, value = Type
