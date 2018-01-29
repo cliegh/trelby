@@ -15,7 +15,7 @@ setup(name="test_py2xxx",
                            "PySide.QtWebKit",
                            "PySide.QtNetwork",
                            "PySide.QtXml"],
-              # 존재하지 않거나 불필요한 파일은 제거합니다.
+              # 존재하지 않거나 불필요한 파일은 제거합니다.!
               #"dll_excludes": ["msvcr71.dll", "OLEAUT32.dll", "IMM32.dll", "COMDLG32.dll", "WINMM.dll", "WINSPOOL.DRV", "ole32.dll",
               #                "MSVCP90.dll", "WSOCK32.dll", "USER32.dll", "ADVAPI32.dll", "SHELL32.dll", "KERNEL32.dll", "WS2_32.dll", "GDI32.dll"],
           }
