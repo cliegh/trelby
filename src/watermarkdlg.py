@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 import pdf
 import pml
 import random
@@ -39,7 +40,7 @@ class WatermarkDlg(wx.Dialog):
         self.filenamePrefix = wx.TextCtrl(self, -1, prefix)
         vsizer.Add(self.filenamePrefix, 0, wx.EXPAND | wx.BOTTOM, 5)
 
-        vsizer.Add(wx.StaticText(self, -1, "Watermark font size:"), 0) # 워터마크 폰트 크기 섲렁
+        vsizer.Add(wx.StaticText(self, -1, "Watermark font size:"), 0) # 워터마크 폰트 크기 설정
         self.markSize = wx.SpinCtrl(self, -1, size=(60, -1))
         self.markSize.SetRange(20, 80)
         self.markSize.SetValue(40)
