@@ -1343,11 +1343,11 @@ class MyCtrl(wx.Control):
             if addChar:
                 cs.char = chr(kc)
 
-                if opts.isTest and (cs.char == "�"):
+                if opts.isTest and (cs.char == "å"):
                     self.loadFile(u"sample.trelby")
-                elif opts.isTest and (cs.char == "�"):
+                elif opts.isTest and (cs.char == "¤"):
                     self.cmdTest(cs)
-                elif opts.isTest and (cs.char == "�"):
+                elif opts.isTest and (cs.char == "½"):
                     self.cmdSpeedTest(cs)
                 else:
                     self.sp.addCharCmd(cs)
