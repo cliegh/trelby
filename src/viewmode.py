@@ -152,12 +152,14 @@ class ViewMode:
                 return
 
         # smooth scrolling not in operation (or failed), recenter screen
+        # 부드러운 스트롤링이 작동하지 않을때 스크린을 재조정한다.
         ctrl.sp.setTopLine(max(0, int(line - (len(texts) * 0.5))))
 
         if not ctrl.isLineVisible(line):
             ctrl.sp.setTopLine(line)
 
     # helper function for makeLineVisibleGeneric
+    # makeLineVisibleGeneric를 위한 헬퍼 기능
     def _makeLineVisibleHelper(self, ctrl, line, direction, jumpAhead):
         startLine = ctrl.sp.getTopLine()
         sign = 1 if (direction == config.SCROLL_DOWN) else -1
@@ -173,6 +175,7 @@ class ViewMode:
         return True
 
     # semi-generic implementation, for use by Draft and Layout modes.
+    # 드래프트와 레이아웃모드에 의해 사용될 세미제너릭 구현
     def pageCmdGeneric(self, ctrl, cs, dir, texts, dpages):
         if dir > 0:
             line = texts[-1].line
@@ -196,7 +199,7 @@ class ViewMode:
                     lastLine = texts[-1].line
 
                     if ctrl.sp.line > lastLine:
-                        # line scrolled off screen, back up one line
+                        # line scrolled off screen, back up one line 줄이 스크린을 넘어가면 한줄을 백업함
                         ctrl.sp.setTopLine(tl + 1)
                         break
 
@@ -206,6 +209,7 @@ class ViewMode:
 
 # Draft view mode. No fancy page break layouts, just text lines on a plain
 # background.
+# 초안보기 모드. 멋드러진 레이아웃 없이, 일반 배경의 텍스트 만 표시된다.
 class ViewModeDraft(ViewMode):
 
     def getScreen(self, ctrl, doExtra, partials = False, pageCache = None):
@@ -261,6 +265,7 @@ class ViewModeDraft(ViewMode):
         # this is not really used for much in draft mode, as it has no
         # concept of page width, but it's safer to return something
         # anyway.
+        # 드래프트모드(초안모드)에서는 페이지 너비에대한 개념이 없으므로 실제로는 많이 사용되지 않지만, 어쨌거나 더 안전한 결과를 반환한다.
         return (ctrl.sp.cfg.paperWidth / ctrl.chX) *\
                ctrl.getCfgGui().fonts[pml.NORMAL].fx
 
@@ -275,6 +280,7 @@ class ViewModeDraft(ViewMode):
 
 # Layout view mode. Pages are shown with the actual layout they would
 # have.
+# 레이아웃뷰 모드. 실제 레이아웃이 포함된 페이지를 보여준다.
 class ViewModeLayout(ViewMode):
 
     def getScreen(self, ctrl, doExtra, partials = False, pageCache = None):
@@ -305,6 +311,7 @@ class ViewModeLayout(ViewMode):
 
         # find out starting place (if something bugs, generatePMLPage
         # below could return None, but it shouldn't happen...)
+        # 시작점을 찾는다. (버그가 있는경우 generatePMLPage는 None를 리턴하지만, 그런일이 일어나선 안된다..)
         if pageCache:
             pg = pageCache.getPage(pager, pageNr)
         else:
@@ -327,7 +334,7 @@ class ViewModeLayout(ViewMode):
 
         # create pages, convert them to display format, repeat until
         # script ends or we've filled the display.
-
+        # 페이지를 만들고, 디스플레이 포멧으로 변환한다. 스크립트가 끝나거나 우리가 디스플레이를 채웠을때까지 반복한다.
         done = False
         while 1:
             if done or (y >= height):
@@ -341,6 +348,7 @@ class ViewModeLayout(ViewMode):
                 # we'd have to go back an arbitrary number of pages to
                 # get an accurate number for this in the worst case,
                 # so disable it altogether.
+                # 우리는 이 worst case에 대해 정확한 숫자를 얻기 위해 임의 숫자의 페이지들로 돌아가야만 한다. 그래서 모두 사용하지 못하게 함.
                 pager.sceneContNr = 0
 
                 if pageCache:
@@ -384,6 +392,7 @@ class ViewModeLayout(ViewMode):
         # if user has inserted new text causing the script to overflow
         # the last page, we need to make the last page extra-long on
         # the screen.
+        # 만약 유저가 마지막 페이지에 스크립트를 삽입하였을때 오버플로우가 일어나게되면, 우리는 화면에서 마지막 페이지를 매우 길게 만들어야 한다.
         if dpages and texts and (pageNr >= (len(ctrl.sp.pages) - 1)):
 
             lastY = texts[-1].y + fontY
@@ -395,6 +404,7 @@ class ViewModeLayout(ViewMode):
     def getLineHeight(self, ctrl):
         # the + 1.0 avoids occasional non-consecutive backgrounds for
         # lines.
+        # +1.0은 라인에대한 때때로 비연속적인 배경을 피합니다.
         return int(ctrl.chY * ctrl.mm2p + 1.0)
 
     def getPageWidth(self, ctrl):
@@ -413,6 +423,7 @@ class ViewModeLayout(ViewMode):
 # Side by side view mode. Pages are shown with the actual layout they
 # would have, as many pages at a time as fit on the screen, complete pages
 # only, in a single row.
+# 나란한 뷰 모드. 페이지들이 실제 레이아웃과함께 나타납니다. 스크린에 딱 맞게 한번에 나올수있는 완성된 페이지수만큼 한줄로 나옵니다. 
 class ViewModeSideBySide(ViewMode):
 
     def getScreen(self, ctrl, doExtra, partials = False, pageCache = None):
@@ -450,6 +461,7 @@ class ViewModeSideBySide(ViewMode):
             # we'd have to go back an arbitrary number of pages to get an
             # accurate number for this in the worst case, so disable it
             # altogether.
+            # 우리는 이 worst case에 대해 정확한 숫자를 얻기 위해 임의 숫자의 페이지들로 돌아가야만 한다. 그래서 모두 사용하지 못하게 함.
             pager.sceneContNr = 0
 
             if pageCache:
@@ -483,6 +495,7 @@ class ViewModeSideBySide(ViewMode):
     def getLineHeight(self, ctrl):
         # the + 1.0 avoids occasional non-consecutive backgrounds for
         # lines.
+        # +1.0은 라인에대한 때때로 비연속적인 배경을 피합니다.
         return int(ctrl.chY * ctrl.mm2p + 1.0)
 
     def getPageWidth(self, ctrl):
