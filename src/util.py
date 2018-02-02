@@ -29,6 +29,7 @@ VALIGN_BOTTOM = 3
 
 # this has to be below the ALIGN stuff, otherwise things break due to
 # circular dependencies
+# 
 import fontinfo
 
 # mappings from lowercase to uppercase letters for different charsets
