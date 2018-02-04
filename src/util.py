@@ -29,10 +29,10 @@ VALIGN_BOTTOM = 3
 
 # this has to be below the ALIGN stuff, otherwise things break due to
 # circular dependencies
-####
+# 이것은 align stuff 아래에 있어야 합니다. 그렇지않으면 circular dependencies 에 의해 중단됩니다?
 import fontinfo
 
-# mappings from lowercase to uppercase letters for different charsets
+# mappings from lowercase to uppercase letters for different charsets 다른 문자열별로 소문자와 대문자를 맵핑.
 _iso_8859_1_map = {
     97 : 65, 98 : 66, 99 : 67, 100 : 68, 101 : 69,
     102 : 70, 103 : 71, 104 : 72, 105 : 73, 106 : 74,
@@ -54,17 +54,21 @@ _to_lower = ""
 
 # translate table for converting strings to only contain valid input
 # characters
+# 유효한 입력 문자만을 포함한 스트링으로 변환하기 위한 번역 테이블.
 _input_tbl = ""
 
 # translate table that converts A-Z -> a-z, keeps a-z as they are, and
 # converts everything else to z.
+# 번역 테이블 대문자를 소문자로 소문자는 그대로 소문자로. 그리고 다른 모든것들을 z 로 바꿉니다.
 _normalize_tbl = ""
 
 # identity table that maps each character to itself. used by deleteChars.
+# 각 character를 각각에 맵핑시켜주는 정체성 테이블. deleteChar에서 쓰임
 _identity_tbl = ""
 
 # map some fancy unicode characters to their nearest ASCII/Latin-1
 # equivalents so when people import text it's not mangled to uselessness
+# 몇개의 유니코드 문자를 가장 가까운 ascii/latin-1로 맵핑한다. 그래서 사람들이 문자를 가져오더라도 그것은 쓸모없어지지 않는다.
 _fancy_unicode_map = {
     ord(u"‘") : u"'",
     ord(u"’") : u"'",
@@ -75,13 +79,14 @@ _fancy_unicode_map = {
     }
 
 # permanent memory DC to get text extents etc
+# 텍스트 크기르 얻기 위한 영구적인 메모리 DC
 permDc = None
 
 def init(doWX = True):
     global _to_upper, _to_lower, _input_tbl, _normalize_tbl, _identity_tbl, \
            permDc
 
-    # setup ISO-8859-1 case-conversion stuff
+    # setup ISO-8859-1 case-conversion stuff // ISO-8859-1 은 다양한 언어를 표현하기위해 사용되는 것이고, 한국어는 포함되지 않는다.
     tmpUpper = []
     tmpLower = []
 
@@ -97,10 +102,10 @@ def init(doWX = True):
         _to_upper += chr(tmpUpper[i])
         _to_lower += chr(tmpLower[i])
 
-    # valid input string stuff
+    # valid input string stuff 
     for i in range(256):
         if isValidInputChar(i):
-            _input_tbl += chr(i)
+            _input_tbl += chr(i) # 유효한 입력 문자만을 포함한 스트링으로 변환하기 위한 번역 테이블.
         else:
             _input_tbl += "|"
 
@@ -115,9 +120,9 @@ def init(doWX = True):
         else:
             ch = "z"
 
-        _normalize_tbl += ch
+        _normalize_tbl += ch # 번역 테이블 대문자를 소문자로 소문자는 그대로 소문자로. 그리고 다른 모든것들을 z 로 바꿉니다.
 
-    _identity_tbl = "".join([chr(i) for i in range(256)])
+    _identity_tbl = "".join([chr(i) for i in range(256)]) # 각 character를 각각에 맵핑시켜주는 정체성 테이블. deleteChar에서 쓰임
 
     if doWX:
         # dunno if the bitmap needs to be big enough to contain the text
