@@ -127,11 +127,14 @@ def init(doWX = True):
     if doWX:
         # dunno if the bitmap needs to be big enough to contain the text
         # we're measuring...
+        # dunno == i don't know
+        # 배트맵이 텍스트를 담기에 충분한 크기인지 모르므로 우리가 측정해줘야한다.
         permDc = wx.MemoryDC()
         permDc.SelectObject(wx.EmptyBitmap(512, 32))
 
 # like string.upper/lower/capitalize, but we do our own charset-handling
 # that doesn't need locales etc
+# string.upper/lower/capitalize처럼 우리의 캐릭터셋 핸들링을 위한 것. 로컬이 필요로 하지 않음.
 def upper(s):
     return s.translate(_to_upper)
 
@@ -143,17 +146,21 @@ def capitalize(s):
 
 # return 's', which must be a unicode string, converted to a ISO-8859-1
 # 8-bit string. characters not representable in ISO-8859-1 are discarded.
+# s 를 받아서 s를 리턴해주는데 ISO-8859-1 8bit string으로 바꿔서 리턴한다. 그리고 이것은 유니코드 스트링이어야만 한다.
+# ISO-8859-1 에서 표현할 수 없는 문자는 버려진다.
 def toLatin1(s):
     return s.encode("ISO-8859-1", "ignore")
 
 # return 's', which must be a string of ISO-8859-1 characters, converted
 # to UTF-8.
+# UTF-8로 변환된 s를 리턴하는데, ISO 8859 형식의 문자열이어야한다.
 def toUTF8(s):
     return unicode(s, "ISO-8859-1").encode("UTF-8")
 
 # return 's', which must be a string of UTF-8 characters, converted to
 # ISO-8859-1, with characters not representable in ISO-8859-1 discarded
 # and any invalid UTF-8 sequences ignored.
+
 def fromUTF8(s):
     return s.decode("UTF-8", "ignore").encode("ISO-8859-1", "ignore")
 
