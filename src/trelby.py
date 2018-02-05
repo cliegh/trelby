@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-1 -*-
+#-*- coding: utf-8 -*-
 
 from error import *
 import autocompletiondlg
@@ -1343,11 +1343,11 @@ class MyCtrl(wx.Control):
             if addChar:
                 cs.char = chr(kc)
 
-                if opts.isTest and (cs.char == "å"):
+                if opts.isTest and (cs.char == "�"):
                     self.loadFile(u"sample.trelby")
-                elif opts.isTest and (cs.char == "¤"):
+                elif opts.isTest and (cs.char == "�"):
                     self.cmdTest(cs)
-                elif opts.isTest and (cs.char == "½"):
+                elif opts.isTest and (cs.char == "�"):
                     self.cmdSpeedTest(cs)
                 else:
                     self.sp.addCharCmd(cs)
@@ -2561,7 +2561,7 @@ class MyApp(wx.App):
             wx.MessageBox("You seem to have an invalid version\n"
                           "(%s) of wxWidgets installed. This\n"
                           "program needs version 3.0." %
-                          wx.VERSION_STRING, "Error", wx.OK)
+                          wx.VERSION_STRING, "Error", wx.OK) # 너는 지금 유효하지않은 wxWidget버젼을 사용하고있다. 이 프로그램은 3.0을 필요로한다.
             sys.exit()
 
         misc.init()
@@ -2574,17 +2574,18 @@ class MyApp(wx.App):
             if major < 5:
                 wx.MessageBox("You seem to have a version of Windows\n"
                               "older than Windows 2000, which is the minimum\n"
-                              "requirement for this program.", "Error", wx.OK)
+                              "requirement for this program.", "Error", wx.OK)# 너는 이 프로그램에게 필요한 최소한의 요구조건인 윈도우 2000 보다 오래된 윈도우 버젼을 쓰고 있구나.
                 sys.exit()
 
         if not "unicode" in wx.PlatformInfo:
-            wx.MessageBox("You seem to be using a non-Unicode build of\n"
+            wx.MessageBox("You seem to be using a non-Unicode build of\n" #너는 non-unicode build의 wxWidget를 사용중인것으로 보인다. 그것은 지원되지 않는다.
                           "wxWidgets. This is not supported.",
                           "Error", wx.OK)
             sys.exit()
 
         # by setting this, we don't have to convert from 8-bit strings to
         # Unicode ourselves everywhere when we pass them to wxWidgets.
+        # 이 세팅을 통해 wxWidget으로 넘겨줘야할때 언제든 우리는 8비트 스트링을 유니코드로 변화시켜줄 필요가 없다. 
         wx.SetDefaultPyEncoding("ISO-8859-1")
 
         os.chdir(misc.progPath)
@@ -2600,6 +2601,8 @@ class MyApp(wx.App):
         else:
             # we want to write out a default config file at startup for
             # various reasons, if no default config file yet exists
+            # 만약 아직 설정파일이 존재하지 않는다면, 우리는 startup하는데 다양한 이유로써 기본적인 설정 파일을 쓰길 원한다 
+            # (startup : 윈도우에서 시동 때 우선 실행해야 할 프로그램 아이콘을 격납하는 그룹)
             util.writeToFile(gd.confFilename, cfgGl.save(), None)
 
         refreshGuiConfig()
@@ -2607,6 +2610,8 @@ class MyApp(wx.App):
         # cfgGl.scriptDir is the directory used on startup, while
         # misc.scriptDir is updated every time the user opens something in
         # a different directory.
+        # cfgGl.scriptDif은 startup하는데 사용되는 디렉토리이다. 
+        # 반면에 misc.scriptDir은 유저가 다른 디렉토리에서 어떤것을 열때마다 업데이트되는것이다.
         misc.scriptDir = cfgGl.scriptDir
 
         if util.fileExists(gd.stateFilename):
@@ -2621,7 +2626,7 @@ class MyApp(wx.App):
             s = util.loadFile(gd.scDictFilename, None)
 
             if s:
-                gd.scDict.load(s)
+                gd.scDict.load(s)# scDict : spell check dictionary 
 
         mainFrame = MyFrame(None, -1, "Trelby")
         mainFrame.init()
