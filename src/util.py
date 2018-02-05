@@ -34,7 +34,8 @@ VALIGN_BOTTOM = 3
 # 이것은 align stuff 아래에 있어야 합니다. 그렇지않으면 circular dependencies 에 의해 중단됩니다?
 import fontinfo
 
-# mappings from lowercase to uppercase letters for different charsets 다른 문자열별로 소문자와 대문자를 맵핑.
+# mappings from lowercase to uppercase letters for different charsets 다른 문자열별로 소문자와 대문자를 맵핑. 
+# 알파벳(A-Z, a-z)을 맵핑한것임. https://old.no/charmap/iso-8859-1.html 참조
 _iso_8859_1_map = {
     97 : 65, 98 : 66, 99 : 67, 100 : 68, 101 : 69,
     102 : 70, 103 : 71, 104 : 72, 105 : 73, 106 : 74,
@@ -167,24 +168,29 @@ def fromUTF8(s):
     return s.decode("UTF-8", "ignore").encode("ISO-8859-1", "ignore")
 
 # returns True if kc (key-code) is a valid character to add to the script.
+# 스크립트에 추가하는 key code가 유효한 문자이면 True를 리턴한다.
 def isValidInputChar(kc):
     # [0x80, 0x9F] = unspecified control characters in ISO-8859-1, added
     # characters like euro etc in windows-1252. 0x7F = backspace, 0xA0 =
     # non-breaking space, 0xAD = soft hyphen.
+
     return (kc >= 32) and (kc <= 255) and not\
            ((kc >= 0x7F) and (kc < 0xA0)) and (kc != 0xAD)
 
 # return s with all non-valid input characters converted to valid input
 # characters, except form feeds, which are just deleted.
+# 모든 비유효한 인풋 문자열을 유효한 인풋 문자열로 바꿔서 s를 리턴한다. 
 def toInputStr(s):
     return s.translate(_input_tbl, "\f")
 
 # replace fancy unicode characters with their ASCII/Latin1 equivalents.
+# 멋진 유니코드 문자를 ASCII/Latin1로 바꾼다.
 def removeFancyUnicode(s):
     return s.translate(_fancy_unicode_map)
 
 # transform external input (unicode) into a form suitable for having in a
 # script
+# 외부 유니코드 입력을 script에 맞는 형태로 바꾼다.
 def cleanInput(s):
     return toInputStr(toLatin1(removeFancyUnicode(s)))
 
