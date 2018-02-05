@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 import struct
 unpack = struct.unpack
 
@@ -24,9 +25,10 @@ def check(val):
 class Font:
 
     # load font from string s, which is the whole contents of a font file
+    # 폰트 파일의 모든 컨텐츠인 스트링 s로부터 폰트를 불러온다.
     def __init__(self, s):
         # is this a valid font
-        self.ok = False
+        self.ok = False#이건 왜있는거지
 
         # parse functions for tables, and a flag for whether each has been
         # parsed successfully
