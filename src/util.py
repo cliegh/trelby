@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-
+#
+# 코드를 작성하는데 쓰이는 다양한 기능들을 모아놓은 유틸리티 파일.
+#
 from error import *
 
 import datetime
@@ -160,7 +162,7 @@ def toUTF8(s):
 # return 's', which must be a string of UTF-8 characters, converted to
 # ISO-8859-1, with characters not representable in ISO-8859-1 discarded
 # and any invalid UTF-8 sequences ignored.
-
+# utf-8 문자형태의 스트링인 s를 리턴한다. s 는 iso-
 def fromUTF8(s):
     return s.decode("UTF-8", "ignore").encode("ISO-8859-1", "ignore")
 
@@ -199,7 +201,7 @@ def deleteChars(s, chars):
 def fixNL(s):
     return s.replace("\r\n", "\n").replace("\r", "\n")
 
-# clamps the given value to a specific range. both limits are optional.
+# clamps the given value to a specific range. both limits are optional. 특정 범위로 주어진 값을 고정시킨다. 양쪽의 제한은 선택적이다.
 def clamp(val, minVal = None, maxVal = None):
     ret = val
 
