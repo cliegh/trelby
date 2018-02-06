@@ -3,21 +3,21 @@ import misc
 import util
 
 import wx
-
+# 다이어로그 형태로 보여주는 자동완성
 class AutoCompletionDlg(wx.Dialog):
     def __init__(self, parent, autoCompletion):
         wx.Dialog.__init__(self, parent, -1, "Auto-completion",
                            style = wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
-
+        
         self.autoCompletion = autoCompletion
-
-        vsizer = wx.BoxSizer(wx.VERTICAL)
+        # 다이얼로그 값들 정함.
+        vsizer = wx.BoxSizer(wx.VERTICAL) 
 
         hsizer = wx.BoxSizer(wx.HORIZONTAL)
 
         hsizer.Add(wx.StaticText(self, -1, "Element:"), 0,
                    wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 10)
-
+        
         self.elementsCombo = wx.ComboBox(self, -1, style = wx.CB_READONLY)
 
         for t in autoCompletion.types.itervalues():
