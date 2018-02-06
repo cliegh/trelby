@@ -5,20 +5,22 @@ import screenplay
 import util
 
 # manages auto completion information for a single script.
-# 관리 
+# 단일 스크립트의 자동완성 기능관리
 class AutoCompletion:
     def __init__(self):
         # type configs, key = line type, value = Type
+        # diction형태로 type이 들어가는데 key는 line type과 value는 Type이 들어감
         self.types = {}
 
         # element types
-        t = Type(screenplay.SCENE)
+        # 요소 유형
+        t = Type(screenplay.SCENE)  #씬 정보
         self.types[t.ti.lt] = t
 
-        t = Type(screenplay.CHARACTER)
+        t = Type(screenplay.CHARACTER)  #캐릭터
         self.types[t.ti.lt] = t
 
-        t = Type(screenplay.TRANSITION)
+        t = Type(screenplay.TRANSITION) #Transition
         t.items = [
             "BACK TO:",
             "CROSSFADE:",
@@ -36,7 +38,7 @@ class AutoCompletion:
             ]
         self.types[t.ti.lt] = t
         
-        t = Type(screenplay.SHOT)
+        t = Type(screenplay.SHOT)   #샷에대한 정보 들어감
         self.types[t.ti.lt] = t
 
         self.refresh()
@@ -78,6 +80,7 @@ class AutoCompletion:
         return self.types.get(lt)
 
 # auto completion info for one element type
+# 한개의 요소가 들어가는 자동완성 기능.
 class Type:
     cvars = None
 
