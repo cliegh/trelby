@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import config
 import gutil
 import misc
@@ -8,10 +9,11 @@ import util
 import os.path
 
 import wx
-
+# config파일을 diaglog로 보여주는 모듈.
 # stupid hack to get correct window modality stacking for dialogs
 cfgFrame = None
 
+# 이 부분은 추후 python 3.x 버전때 wxPython 4.xx 로 바뀔 예정임.
 # WX2.6-FIXME: we can delete this when/if we switch to using wxListBook in
 # wxWidgets 2.6
 class MyListBook(wx.ListBox):

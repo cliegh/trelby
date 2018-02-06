@@ -1,14 +1,16 @@
+# -*- coding: utf-8 -*-
 import gutil
 import misc
 import util
 
 import wx
 # 다이어로그 형태로 보여주는 자동완성
+# 이 부분은 추후 python 3.x 버전때 wxPython 4.xx 로 바뀔 예정임.
 class AutoCompletionDlg(wx.Dialog):
     def __init__(self, parent, autoCompletion):
         wx.Dialog.__init__(self, parent, -1, "Auto-completion",
                            style = wx.DEFAULT_DIALOG_STYLE | wx.RESIZE_BORDER)
-        
+
         self.autoCompletion = autoCompletion
         # 다이얼로그 값들 정함.
         vsizer = wx.BoxSizer(wx.VERTICAL) 
