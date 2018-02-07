@@ -1,9 +1,10 @@
+# -*- coding: utf-8 -*-
 import misc
 import pdf
 import pml
 import screenplay
 import util
-
+"""Report -> CharacterReport를 누르면 실행되는 곳"""
 class CharacterReport:
     def __init__(self, sp):
 

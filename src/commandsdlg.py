@@ -1,10 +1,11 @@
+# -*- coding: utf-8 -*-
 import misc
 import util
 
 import xml.sax.saxutils as xss
 import wx
 import wx.html
-
+'''Help-> Commands 을 누를때 '''
 class CommandsDlg(wx.Frame):
     def __init__(self, cfgGl):
         wx.Frame.__init__(self, None, -1, "Commands",

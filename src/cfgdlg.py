@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+#!/usr/bin/env python
 import config
 import gutil
 import misc
@@ -65,7 +66,7 @@ class MyListBook(wx.ListBox):
             panel.doForcedUpdate()
 
         panel.Show()
-
+#Config 다이얼로그
 class CfgDlg(wx.Dialog):
     def __init__(self, parent, cfg, applyFunc, isGlobal):
         wx.Dialog.__init__(self, parent, -1, "",
@@ -182,7 +183,8 @@ class AboutPanel(wx.Panel):
 class GlobalAboutPanel(AboutPanel):
     def __init__(self, parent, id, cfg):
         s = \
-"""This is the config dialog for global settings, which means things
+""" 전역 세팅에 관한 것(키보드 단축키, 색깔, 글씨체 등)
+This is the config dialog for global settings, which means things
 that affect the user interface of the program like interface colors,
 keyboard shortcuts, display fonts, and so on.
 
@@ -197,7 +199,8 @@ output for a script. See Script/Settings for those."""
 class ScriptAboutPanel(AboutPanel):
     def __init__(self, parent, id, cfg):
         s = \
-"""This is the config dialog for script format settings, which means
+""" PDF 변환에 관한것. 
+This is the config dialog for script format settings, which means
 things that affect the generated PDF output of a script. Things like
 paper size, indendation/line widths/font styles for the different
 element types, and so on.
@@ -208,7 +211,8 @@ If you're looking for the user interface settings (colors, keyboard
 shortcuts, etc.), those are found in File/Settings."""
 
         AboutPanel.__init__(self, parent, id, cfg, s)
-
+""" 디스플레이에 관한 것.
+"""
 class DisplayPanel(wx.Panel):
     def __init__(self, parent, id, cfg):
         wx.Panel.__init__(self, parent, id)
@@ -514,7 +518,7 @@ class ElementsPanel(wx.Panel):
         self.intraSpacingEntry.SetValue(tcfg.intraSpacing)
         self.indentEntry.SetValue(tcfg.indent)
         self.widthEntry.SetValue(tcfg.width)
-
+"""색깔에 관한 것"""
 class ColorsPanel(wx.Panel):
     def __init__(self, parent, id, cfg):
         wx.Panel.__init__(self, parent, id)
@@ -597,7 +601,9 @@ class ColorsPanel(wx.Panel):
         self.colorSample.SetBackgroundColour(
             getattr(self.cfg, self.color).toWx())
         self.colorSample.Refresh()
-
+"""
+페이지에 관한 것
+"""
 class PaperPanel(wx.Panel):
     def __init__(self, parent, id, cfg):
         wx.Panel.__init__(self, parent, id)
@@ -1328,7 +1334,7 @@ class StringsPanel(wx.Panel):
     def cfg2gui(self):
         for it in self.items:
             getattr(self, it).SetValue(getattr(self.cfg, it))
-
+"""PDF 패널"""
 class PDFPanel(wx.Panel):
     def __init__(self, parent, id, cfg):
         wx.Panel.__init__(self, parent, id)
@@ -1386,7 +1392,7 @@ class PDFPanel(wx.Panel):
         self.removeNotesCb.SetValue(self.cfg.pdfRemoveNotes)
         self.outlineNotesCb.SetValue(self.cfg.pdfOutlineNotes)
         self.marginsCb.SetValue(self.cfg.pdfShowMargins)
-
+'''PDF Fonts에 관한 패널 '''
 class PDFFontsPanel(wx.Panel):
     def __init__(self, parent, id, cfg):
         wx.Panel.__init__(self, parent, id)

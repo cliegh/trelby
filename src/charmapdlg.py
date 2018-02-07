@@ -3,7 +3,7 @@ import misc
 import util
 
 import wx
-
+"""Tools -> CharacterMap 을 누르면 실행되는곳."""
 class CharMapDlg(wx.Dialog):
     def __init__(self, parent, ctrl):
         wx.Dialog.__init__(self, parent, -1, "Character map")
@@ -25,7 +25,7 @@ class CharMapDlg(wx.Dialog):
     def OnInsert(self, event):
         if self.charMap.selected:
             self.ctrl.OnKeyChar(util.MyKeyEvent(ord(self.charMap.selected)))
-
+'''캐릭터 맵 안의 글자들 출력'''
 class MyCharMap(wx.Window):
     def __init__(self, parent):
         wx.Window.__init__(self, parent, -1)
