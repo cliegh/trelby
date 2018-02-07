@@ -1,5 +1,5 @@
 # exception classes
-
+# -*- coding: utf-8 -*-
 class TrelbyError(Exception):
     def __init__(self, msg):
         Exception.__init__(self, msg)

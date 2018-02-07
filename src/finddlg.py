@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import config
 import gutil
 import misc
@@ -5,7 +6,7 @@ import undo
 import util
 
 import wx
-
+#찾아 바꾸기 
 class FindDlg(wx.Dialog):
     def __init__(self, parent, ctrl):
         wx.Dialog.__init__(self, parent, -1, "Find & Replace",
