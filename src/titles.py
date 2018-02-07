@@ -2,6 +2,9 @@ import pml
 import util
 
 # a script's title pages.
+# 스크립트 메뉴에 있는 타이틀 페이지 세팅.
+# 트렐비 기본 페이지는 바로 스크립트 쓰는것부터 시작하는데
+# 일반적인 대본의 타이블 화면을 편집할수 있게 해줌.
 class Titles:
 
     def __init__(self):
