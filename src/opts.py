@@ -1,5 +1,5 @@
 import sys
-
+# utf변경에 관한 이야기 인듯 함. 
 # TODO: Python, at least up to 2.4, does not support Unicode command line
 # arguments on Windows. Since UNIXes use UTF-8, just assume all command
 # line arguments are UTF-8 for now, and silently ignore any coding errors

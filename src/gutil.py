@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from error import *
 import misc
 import util
@@ -10,7 +11,7 @@ if "TRELBY_TESTING" in os.environ:
     wx = mock.Mock()
 else:
     import wx
-
+# 유틸 정보들.
 # this contains misc GUI-related functions
 
 # since at least GTK 1.2's single-selection listbox is buggy in that if we

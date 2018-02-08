@@ -1,8 +1,10 @@
+# -*- coding: utf-8 -*-
 # PML is short for Page Modeling Language, our own neat little PDF-wannabe
 # format for expressing a script's complete contents in a neutral way
 # that's easy to render to almost anything, e.g. PDF, Postscript, Windows
 # GDI, etc.
-#
+# PML은 페이지 모델링 언어의 약자로서 스크립트의 컨텐츠를 완성하는 식의 형태이다. 
+# PDF나 다른 여타 것들을 쉽게 랜더링 해줄 수 있는 일반적인 방식이다.
 
 # A PML document is a collection of pages plus possibly some metadata.
 # Each page is a collection of simple drawing commands, executed
@@ -31,7 +33,7 @@ UNDERLINED = 16
 NO_FILL = 0
 FILL = 1
 STROKE_FILL = 2
-
+# 문서
 # A single document.
 class Document:
 
@@ -72,7 +74,7 @@ class Document:
 
     def addFont(self, style, pfi):
         self.fonts[style] = pfi
-
+# 페이지 정보
 class Page:
     def __init__(self, doc):
 
@@ -100,7 +102,7 @@ class TOCItem:
 
         # the PDF object number of the page we point to
         self.pageObjNr = -1
-
+# PDF 정보
 # information about one PDF font
 class PDFFontInfo:
     def __init__(self, name, fontProgram):

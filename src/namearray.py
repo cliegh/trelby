@@ -1,6 +1,7 @@
+# -*- coding: utf-8 -*-
 import array
 import collections
-
+# 이름 배열들
 class NameArray:
     def __init__(self):
         self.maxCount = 205000

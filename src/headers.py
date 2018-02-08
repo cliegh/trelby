@@ -1,6 +1,7 @@
+# -*- coding: utf-8 -*-
 import pml
 import util
-
+# Scripts -> Headers를 누르면 나오는 정보들
 # a script's headers.
 class Headers:
 
@@ -37,7 +38,7 @@ class Headers:
     def generatePML(self, page, pageNr, cfg):
         for h in self.hdrs:
             h.generatePML(page, pageNr, cfg)
-
+# 제목부분 문자열
 # a single header string
 class HeaderString:
     def __init__(self):

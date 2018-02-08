@@ -1,8 +1,9 @@
+# -*- coding: utf-8 -*-
 import config
 import util
 
 import copy
-
+# 다양한 변수들(이름이나 숫자들 정보들)
 # keep track about one object's variables
 class Vars:
     def __init__(self):
