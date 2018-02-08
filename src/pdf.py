@@ -2,12 +2,8 @@
 import fontinfo
 import pml
 import util
-<<<<<<< HEAD
 import math
 import misc
-=======
-# PDF변환할때의 정보인듯
->>>>>>> cliegh/master
 
 from reportlab.pdfgen import canvas
 import StringIO
@@ -118,7 +114,6 @@ class PDFRectOp(PDFDrawOp):
             print "Invalid fill type for RectOp"
 
 class PDFQuarterCircleOp(PDFDrawOp):
-<<<<<<< HEAD
     def draw(self, pmlOp, pageNr, canvas, pe):
         canvas.setLineWidth(pe.mm2points(pmlOp.width))
         path = canvas.beginPath()
@@ -142,34 +137,6 @@ class PDFSetStrokeGray(PDFDrawOp):
 class PDFSetDash(PDFDrawOp):
     def draw(self, pmlOp, pageNr, canvas, pe):
         canvas.setDash(pmlOp.dashArray, pmlOp.phase)
-=======
-    def draw(self, pmlOp, pageNr, output, pe):
-        sX = pmlOp.flipX and -1 or 1
-        sY = pmlOp.flipY and -1 or 1
-
-        # The traditional constant is: 0.552284749
-        # however, as described here:
-        # http://spencermortensen.com/articles/bezier-circle/,
-        # this has a maximum radial drift of 0.027253%.
-        # The constant calculated by Spencer Mortensen
-        # has a max. drift of 0.019608% which is 28% better.
-        A = pmlOp.radius * 0.551915024494
-
-        output += "%f w\n"\
-                  "%s m\n" % (pe.mm2points(pmlOp.width),
-                              pe.xy((pmlOp.x - pmlOp.radius * sX, pmlOp.y)))
-
-        output += "%f %f %f %f %f %f c\n" % (
-            pe.x(pmlOp.x - pmlOp.radius * sX), pe.y(pmlOp.y - A * sY),
-            pe.x(pmlOp.x - A * sX), pe.y(pmlOp.y - pmlOp.radius * sY),
-            pe.x(pmlOp.x), pe.y(pmlOp.y - pmlOp.radius * sY))
-
-        output += "S\n"
-
-class PDFArbitraryOp(PDFDrawOp):
-    def draw(self, pmlOp, pageNr, output, pe):
-        output += "%s\n" % pmlOp.cmds
->>>>>>> cliegh/master
 
 # used for keeping track of used fonts
 class FontInfo:

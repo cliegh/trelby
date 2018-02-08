@@ -501,11 +501,7 @@ class MyTabCtrl(wx.Window):
 
             dc.DestroyClippingRegion()
             dc.SetFont(self.boldFont)
-<<<<<<< HEAD
             dc.DrawText(u"\u00d7", xpos + tabW - self.paddingX * 2, self.textY)
-=======
-            dc.DrawText("x", xpos + tabW - self.paddingX * 2, self.textY)
->>>>>>> cliegh/master
 
             xpos += tabW
 

@@ -1323,12 +1323,9 @@ class MyCtrl(wx.Control):
         unichar = unichr(ev.GetUnicodeKey())
 	category = unicodedata.category(unichar) 
 
-<<<<<<< HEAD
         #print "kc: %d, unicodekey: %s, category: %s, ctrl/alt/shift: %d, %d, %d" %\
         #      (ev.GetKeyCode(), ev.GetUnicodeKey(), category, ev.ControlDown(), ev.AltDown(), ev.ShiftDown())
 
-=======
->>>>>>> cliegh/master
         cs = screenplay.CommandState()
         cs.mark = bool(ev.ShiftDown())
         scrollDirection = config.SCROLL_CENTER
@@ -2591,14 +2588,6 @@ class MyApp(wx.App):
                           "Error", wx.OK)
             sys.exit()
 
-<<<<<<< HEAD
-=======
-        # by setting this, we don't have to convert from 8-bit strings to
-        # Unicode ourselves everywhere when we pass them to wxWidgets.
-        # 이 세팅을 통해 wxWidget으로 넘겨줘야할때 언제든 우리는 8비트 스트링을 유니코드로 변화시켜줄 필요가 없다. 
-        wx.SetDefaultPyEncoding("ISO-8859-1")
-
->>>>>>> cliegh/master
         os.chdir(misc.progPath)
 
         cfgGl = config.ConfigGlobal()

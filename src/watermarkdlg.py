@@ -123,11 +123,7 @@ class WatermarkDlg(wx.Dialog):
             ops = []
 
             # almost-not-there gray
-<<<<<<< HEAD
             ops.append(pml.SetFillGray(0.85))
-=======
-            ops.append(pml.PDFOp("0.85 g")) # 아마 color 지정. 그레이로
->>>>>>> cliegh/master
 
             if common:
                 wm = pml.TextOp(
