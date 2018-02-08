@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import mypickle
 import util
 # 스크립트를 돌면서 올바르지 않은 스펠링을 찾아 준다
