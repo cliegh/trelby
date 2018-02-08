@@ -1,11 +1,7 @@
 *.pyc
 *.pyo
 .trelby/
-<<<<<<< HEAD
 *.py~
 *.swp
 dist/
 build/
-=======
-.DS_Store
->>>>>>> cliegh/master
