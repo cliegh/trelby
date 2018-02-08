@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import sys
 # utf변경에 관한 이야기 인듯 함. 
 # TODO: Python, at least up to 2.4, does not support Unicode command line
