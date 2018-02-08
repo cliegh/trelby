@@ -1,6 +1,7 @@
+# -*- coding: utf-8 -*-
 import screenplay
 import pml
-
+# 페이지 정보입력하는곳인듯
 # used to iteratively add PML pages to a document
 class Pager:
     def __init__(self, cfg):

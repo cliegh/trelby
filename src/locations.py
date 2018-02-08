@@ -1,6 +1,7 @@
+# -*- coding: utf-8 -*-
 import mypickle
 import util
-
+# Scripts -> Location을 누르면 나오는 정보들.
 # manages location-information for a single screenplay. a "location" is a
 # single place that can be referred to using multiple scene names, e.g.
 #  INT. MOTEL ROOM - DAY

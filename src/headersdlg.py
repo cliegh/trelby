@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import gutil
 import headers
 import misc
@@ -6,7 +7,7 @@ import pml
 import util
 
 import wx
-
+# Scripts -> Headers를 누르면 나오는 화면
 class HeadersDlg(wx.Dialog):
     def __init__(self, parent, headers, cfg, cfgGl, applyFunc):
         wx.Dialog.__init__(self, parent, -1, "Headers",

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import characterreport
 import config
 import pdf

@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
 import fontinfo
 import pml
 import util
+# PDF변환할때의 정보인듯
 
 # PDF transform matrixes where key is the angle from x-axis
 # in counter-clockwise direction.

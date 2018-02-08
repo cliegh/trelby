@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import misc
 import pdf
 import pml
@@ -6,7 +7,7 @@ import screenplay
 import util
 
 import operator
-
+# Report -> Locationreport 를 누르면 나오는 정보들
 class LocationReport:
     # sr = SceneReport
     def __init__(self, sr):

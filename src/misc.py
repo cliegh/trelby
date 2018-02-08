@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
 
 import gutil
 import opts
@@ -59,7 +59,7 @@ def init(doWX = True):
 
             if not os.path.exists(confPath):
                 os.makedirs(confPath)
-
+# 소스를 실행시킬려면 이부분을 바꿔줘야 한다.
 def getPathFromRegistry():
     registryPath = r"Software\Microsoft\Windows\CurrentVersion\App Paths\trelby.exe"
 
@@ -151,7 +151,7 @@ class MyFSButton(wx.Window):
         clickEvent = wx.CommandEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED, self.GetId())
         clickEvent.SetEventObject(self)
         self.GetEventHandler().ProcessEvent(clickEvent)
-
+# 여기가 상태정보인듯
 # custom status control
 class MyStatus(wx.Window):
     WIDTH = 280
@@ -499,7 +499,7 @@ class MyTabCtrl(wx.Window):
 
             dc.DestroyClippingRegion()
             dc.SetFont(self.boldFont)
-            dc.DrawText("�", xpos + tabW - self.paddingX * 2, self.textY)
+            dc.DrawText("x", xpos + tabW - self.paddingX * 2, self.textY)
 
             xpos += tabW
 
