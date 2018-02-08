@@ -6,6 +6,8 @@ LB_SPACE = 1
 
 # we don't use this anymore, but we have to keep it in order to be able to
 # load old scripts
+# 우리는 더이상 이것을 사용할필요가 없다 하지만 우리는 오래된 스크립트를 로드하기위해 이것을 유지해야만한다.
+# (linebreak types 에 관한 얘기인가?)
 LB_SPACE2 = 2
 
 LB_NONE = 3
@@ -45,7 +47,7 @@ import time
 
 from lxml import etree
 
-# screenplay
+# screenplay : 영화대본, 시나리오
 class Screenplay:
     def __init__(self, cfgGl):
         self.autoCompletion = autocompletion.AutoCompletion()
@@ -139,7 +141,7 @@ class Screenplay:
     # we implement our own custom deepcopy because it's 8-10x faster than
     # the generic one (times reported by cmdSpeedTest using a 119-page
     # screenplay):
-    #
+    # 우리는 우리가 개발한 deepcopy를 구현했다. 왜냐하면 그것이 기존의것보다 8~10배 빠르기 때문이다.
     # ╭─────────────────────────────┬─────────┬────────╮
     # │                             │ Generic │ Custom │
     # ├─────────────────────────────┼─────────┼────────┤

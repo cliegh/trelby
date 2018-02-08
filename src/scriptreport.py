@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import characterreport
 import config
 import pdf
@@ -5,7 +6,8 @@ import pml
 import scenereport
 import screenplay
 import util
-
+# 현재 스크립트의 상태정보를 보고해준다
+# 씬이 몇개, 라인이 몇줄, 캐릭터가 몇개인지 등등을 알려준다
 class ScriptReport:
     def __init__(self, sp):
         self.sp = sp

@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-1 -*-
+#-*- coding: utf-8 -*-
 
 from error import *
 import autocompletiondlg
@@ -53,9 +53,7 @@ KC_CTRL_V = 22
 VIEWMODE_DRAFT,\
 VIEWMODE_LAYOUT,\
 VIEWMODE_SIDE_BY_SIDE,\
-VIEWMODE_OVERVIEW_SMALL,\
-VIEWMODE_OVERVIEW_LARGE,\
-= range(5)
+= range(3)
 
 def refreshGuiConfig():
     global cfgGui
@@ -99,7 +97,7 @@ class GlobalData:
 
         v.addInt("height", 830, "Height", 300, 9999)
         v.addInt("viewMode", VIEWMODE_DRAFT, "ViewMode", VIEWMODE_DRAFT,
-                 VIEWMODE_OVERVIEW_LARGE)
+                 VIEWMODE_SIDE_BY_SIDE)
 
         v.addList("files", [], "Files",
                   mypickle.StrUnicodeVar("", u"", ""))
@@ -113,8 +111,6 @@ class GlobalData:
         self.vmDraft = viewmode.ViewModeDraft()
         self.vmLayout = viewmode.ViewModeLayout()
         self.vmSideBySide = viewmode.ViewModeSideBySide()
-        self.vmOverviewSmall = viewmode.ViewModeOverview(1)
-        self.vmOverviewLarge = viewmode.ViewModeOverview(2)
 
         self.setViewMode(self.viewMode)
 
@@ -141,10 +137,8 @@ class GlobalData:
             self.vm = self.vmLayout
         elif viewMode == VIEWMODE_SIDE_BY_SIDE:
             self.vm = self.vmSideBySide
-        elif viewMode == VIEWMODE_OVERVIEW_SMALL:
-            self.vm = self.vmOverviewSmall
         else:
-            self.vm = self.vmOverviewLarge
+            self.vm = self.vmDraft
 
     # load from string 's'. does not throw any exceptions and silently
     # ignores any errors.
@@ -591,10 +585,6 @@ class MyCtrl(wx.Control):
             self.OnLeftDown(event, mark = True)
 
     def OnRightDown(self, event):
-        # No popup in the overview modes.
-        if gd.viewMode in (VIEWMODE_OVERVIEW_SMALL, VIEWMODE_OVERVIEW_LARGE):
-            return
-
         pos = event.GetPosition()
         line, col = gd.vm.pos2linecol(self, pos.x, pos.y)
 
@@ -1333,9 +1323,12 @@ class MyCtrl(wx.Control):
         unichar = unichr(ev.GetUnicodeKey())
 	category = unicodedata.category(unichar) 
 
+<<<<<<< HEAD
         #print "kc: %d, unicodekey: %s, category: %s, ctrl/alt/shift: %d, %d, %d" %\
         #      (ev.GetKeyCode(), ev.GetUnicodeKey(), category, ev.ControlDown(), ev.AltDown(), ev.ShiftDown())
 
+=======
+>>>>>>> cliegh/master
         cs = screenplay.CommandState()
         cs.mark = bool(ev.ShiftDown())
         scrollDirection = config.SCROLL_CENTER
@@ -1373,11 +1366,11 @@ class MyCtrl(wx.Control):
             if addChar:
                 cs.char = unichar
 
-                if opts.isTest and (cs.char == "�"):
+                if opts.isTest and (cs.char == "�"):
                     self.loadFile(u"sample.trelby")
-                elif opts.isTest and (cs.char == "�"):
+                elif opts.isTest and (cs.char == "�"):
                     self.cmdTest(cs)
-                elif opts.isTest and (cs.char == "�"):
+                elif opts.isTest and (cs.char == "�"):
                     self.cmdSpeedTest(cs)
                 else:
                     self.sp.addCharCmd(cs)
@@ -1743,21 +1736,13 @@ class MyFrame(wx.Frame):
         viewMenu.AppendRadioItem(ID_VIEW_STYLE_DRAFT, "&Draft")
         viewMenu.AppendRadioItem(ID_VIEW_STYLE_LAYOUT, "&Layout")
         viewMenu.AppendRadioItem(ID_VIEW_STYLE_SIDE_BY_SIDE, "&Side by side")
-        viewMenu.AppendRadioItem(ID_VIEW_STYLE_OVERVIEW_SMALL,
-                                 "&Overview - Small")
-        viewMenu.AppendRadioItem(ID_VIEW_STYLE_OVERVIEW_LARGE,
-                                 "O&verview - Large")
 
         if gd.viewMode == VIEWMODE_DRAFT:
             viewMenu.Check(ID_VIEW_STYLE_DRAFT, True)
         elif gd.viewMode == VIEWMODE_LAYOUT:
             viewMenu.Check(ID_VIEW_STYLE_LAYOUT, True)
-        elif gd.viewMode == VIEWMODE_SIDE_BY_SIDE:
-            viewMenu.Check(ID_VIEW_STYLE_SIDE_BY_SIDE, True)
-        elif gd.viewMode == VIEWMODE_OVERVIEW_SMALL:
-            viewMenu.Check(ID_VIEW_STYLE_OVERVIEW_SMALL, True)
         else:
-            viewMenu.Check(ID_VIEW_STYLE_OVERVIEW_LARGE, True)
+            viewMenu.Check(ID_VIEW_STYLE_SIDE_BY_SIDE, True)
 
         viewMenu.AppendSeparator()
         viewMenu.AppendCheckItem(ID_VIEW_SHOW_FORMATTING, "&Show formatting")
@@ -1942,8 +1927,6 @@ class MyFrame(wx.Frame):
         wx.EVT_MENU(self, ID_VIEW_STYLE_DRAFT, self.OnViewModeChange)
         wx.EVT_MENU(self, ID_VIEW_STYLE_LAYOUT, self.OnViewModeChange)
         wx.EVT_MENU(self, ID_VIEW_STYLE_SIDE_BY_SIDE, self.OnViewModeChange)
-        wx.EVT_MENU(self, ID_VIEW_STYLE_OVERVIEW_SMALL, self.OnViewModeChange)
-        wx.EVT_MENU(self, ID_VIEW_STYLE_OVERVIEW_LARGE, self.OnViewModeChange)
         wx.EVT_MENU(self, ID_VIEW_SHOW_FORMATTING, self.OnShowFormatting)
         wx.EVT_MENU(self, ID_VIEW_FULL_SCREEN, self.ToggleFullscreen)
         wx.EVT_MENU(self, ID_SCRIPT_FIND_ERROR, self.OnFindNextError)
@@ -2065,8 +2048,6 @@ class MyFrame(wx.Frame):
             "ID_VIEW_SHOW_FORMATTING",
             "ID_VIEW_STYLE_DRAFT",
             "ID_VIEW_STYLE_LAYOUT",
-            "ID_VIEW_STYLE_OVERVIEW_LARGE",
-            "ID_VIEW_STYLE_OVERVIEW_SMALL",
             "ID_VIEW_STYLE_SIDE_BY_SIDE",
             "ID_TOOLBAR_SETTINGS",
             "ID_TOOLBAR_SCRIPTSETTINGS",
@@ -2412,25 +2393,13 @@ class MyFrame(wx.Frame):
         self.menuBar.Check(ID_VIEW_STYLE_SIDE_BY_SIDE, True)
         self.OnViewModeChange()
 
-    def OnViewModeOverviewSmall(self):
-        self.menuBar.Check(ID_VIEW_STYLE_OVERVIEW_SMALL, True)
-        self.OnViewModeChange()
-
-    def OnViewModeOverviewLarge(self):
-        self.menuBar.Check(ID_VIEW_STYLE_OVERVIEW_LARGE, True)
-        self.OnViewModeChange()
-
     def OnViewModeChange(self, event = None):
         if self.menuBar.IsChecked(ID_VIEW_STYLE_DRAFT):
             mode = VIEWMODE_DRAFT
         elif self.menuBar.IsChecked(ID_VIEW_STYLE_LAYOUT):
             mode = VIEWMODE_LAYOUT
-        elif self.menuBar.IsChecked(ID_VIEW_STYLE_SIDE_BY_SIDE):
-            mode = VIEWMODE_SIDE_BY_SIDE
-        elif self.menuBar.IsChecked(ID_VIEW_STYLE_OVERVIEW_SMALL):
-            mode = VIEWMODE_OVERVIEW_SMALL
         else:
-            mode = VIEWMODE_OVERVIEW_LARGE
+            mode = VIEWMODE_SIDE_BY_SIDE
 
         gd.setViewMode(mode)
 
@@ -2600,7 +2569,7 @@ class MyApp(wx.App):
             wx.MessageBox("You seem to have an invalid version\n"
                           "(%s) of wxWidgets installed. This\n"
                           "program needs version 3.0." %
-                          wx.VERSION_STRING, "Error", wx.OK)
+                          wx.VERSION_STRING, "Error", wx.OK) # 너는 지금 유효하지않은 wxWidget버젼을 사용하고있다. 이 프로그램은 3.0을 필요로한다.
             sys.exit()
 
         misc.init()
@@ -2613,15 +2582,23 @@ class MyApp(wx.App):
             if major < 5:
                 wx.MessageBox("You seem to have a version of Windows\n"
                               "older than Windows 2000, which is the minimum\n"
-                              "requirement for this program.", "Error", wx.OK)
+                              "requirement for this program.", "Error", wx.OK)# 너는 이 프로그램에게 필요한 최소한의 요구조건인 윈도우 2000 보다 오래된 윈도우 버젼을 쓰고 있구나.
                 sys.exit()
 
         if not "unicode" in wx.PlatformInfo:
-            wx.MessageBox("You seem to be using a non-Unicode build of\n"
+            wx.MessageBox("You seem to be using a non-Unicode build of\n" #너는 non-unicode build의 wxWidget를 사용중인것으로 보인다. 그것은 지원되지 않는다.
                           "wxWidgets. This is not supported.",
                           "Error", wx.OK)
             sys.exit()
 
+<<<<<<< HEAD
+=======
+        # by setting this, we don't have to convert from 8-bit strings to
+        # Unicode ourselves everywhere when we pass them to wxWidgets.
+        # 이 세팅을 통해 wxWidget으로 넘겨줘야할때 언제든 우리는 8비트 스트링을 유니코드로 변화시켜줄 필요가 없다. 
+        wx.SetDefaultPyEncoding("ISO-8859-1")
+
+>>>>>>> cliegh/master
         os.chdir(misc.progPath)
 
         cfgGl = config.ConfigGlobal()
@@ -2635,6 +2612,8 @@ class MyApp(wx.App):
         else:
             # we want to write out a default config file at startup for
             # various reasons, if no default config file yet exists
+            # 만약 아직 설정파일이 존재하지 않는다면, 우리는 startup하는데 다양한 이유로써 기본적인 설정 파일을 쓰길 원한다 
+            # (startup : 윈도우에서 시동 때 우선 실행해야 할 프로그램 아이콘을 격납하는 그룹)
             util.writeToFile(gd.confFilename, cfgGl.save(), None)
 
         refreshGuiConfig()
@@ -2642,6 +2621,8 @@ class MyApp(wx.App):
         # cfgGl.scriptDir is the directory used on startup, while
         # misc.scriptDir is updated every time the user opens something in
         # a different directory.
+        # cfgGl.scriptDif은 startup하는데 사용되는 디렉토리이다. 
+        # 반면에 misc.scriptDir은 유저가 다른 디렉토리에서 어떤것을 열때마다 업데이트되는것이다.
         misc.scriptDir = cfgGl.scriptDir
 
         if util.fileExists(gd.stateFilename):
@@ -2656,7 +2637,7 @@ class MyApp(wx.App):
             s = util.loadFile(gd.scDictFilename, None)
 
             if s:
-                gd.scDict.load(s)
+                gd.scDict.load(s)# scDict : spell check dictionary 
 
         mainFrame = MyFrame(None, -1, "Trelby")
         mainFrame.init()

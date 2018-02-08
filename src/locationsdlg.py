@@ -1,9 +1,10 @@
+# -*- coding: utf-8 -*-
 import gutil
 import locations
 import util
 
 import wx
-
+#Scripts -> Location을 누르면 나오는 화면 
 class LocationsDlg(wx.Dialog):
     def __init__(self, parent, sp):
         wx.Dialog.__init__(self, parent, -1, "Locations",

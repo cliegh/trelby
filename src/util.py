@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-
+#
+# 코드를 작성하는데 쓰이는 다양한 기능들을 모아놓은 유틸리티 파일.
+#
 from error import *
 
 import datetime
@@ -30,9 +32,11 @@ VALIGN_BOTTOM = 3
 
 # this has to be below the ALIGN stuff, otherwise things break due to
 # circular dependencies
+# 이것은 align stuff 아래에 있어야 합니다. 그렇지않으면 circular dependencies 에 의해 중단됩니다?
 import fontinfo
 
-# mappings from lowercase to uppercase letters for different charsets
+# mappings from lowercase to uppercase letters for different charsets 다른 문자열별로 소문자와 대문자를 맵핑. 
+# 알파벳(A-Z, a-z)을 맵핑한것임. https://old.no/charmap/iso-8859-1.html 참조
 _iso_8859_1_map = {
     97 : 65, 98 : 66, 99 : 67, 100 : 68, 101 : 69,
     102 : 70, 103 : 71, 104 : 72, 105 : 73, 106 : 74,
@@ -52,12 +56,29 @@ _iso_8859_1_map = {
 _to_upper = ""
 _to_lower = ""
 
+<<<<<<< HEAD
+=======
+# translate table for converting strings to only contain valid input
+# characters
+# 유효한 입력 문자만을 포함한 스트링으로 변환하기 위한 번역 테이블.
+_input_tbl = ""
+
+>>>>>>> cliegh/master
 # translate table that converts A-Z -> a-z, keeps a-z as they are, and
 # converts everything else to z.
+# 번역 테이블 대문자를 소문자로 소문자는 그대로 소문자로. 그리고 다른 모든것들을 z 로 바꿉니다.
 _normalize_tbl = ""
 
+<<<<<<< HEAD
+=======
+# identity table that maps each character to itself. used by deleteChars.
+# 각 character를 각각에 맵핑시켜주는 정체성 테이블. deleteChar에서 쓰임
+_identity_tbl = ""
+
+>>>>>>> cliegh/master
 # map some fancy unicode characters to their nearest ASCII/Latin-1
 # equivalents so when people import text it's not mangled to uselessness
+# 몇개의 유니코드 문자를 가장 가까운 ascii/latin-1로 맵핑한다. 그래서 사람들이 문자를 가져오더라도 그것은 쓸모없어지지 않는다.
 _fancy_unicode_map = {
     ord(u"‘") : u"'",
     ord(u"’") : u"'",
@@ -68,12 +89,13 @@ _fancy_unicode_map = {
     }
 
 # permanent memory DC to get text extents etc
+# 텍스트 크기르 얻기 위한 영구적인 메모리 DC
 permDc = None
 
 def init(doWX = True):
     global _to_upper, _to_lower, _normalize_tbl, permDc
 
-    # setup ISO-8859-1 case-conversion stuff
+    # setup ISO-8859-1 case-conversion stuff // ISO-8859-1 은 다양한 언어를 표현하기위해 사용되는 것이고, 한국어는 포함되지 않는다.
     tmpUpper = []
     tmpLower = []
 
@@ -89,6 +111,16 @@ def init(doWX = True):
         _to_upper += chr(tmpUpper[i])
         _to_lower += chr(tmpLower[i])
 
+<<<<<<< HEAD
+=======
+    # valid input string stuff 
+    for i in range(256):
+        if isValidInputChar(i):
+            _input_tbl += chr(i) # 유효한 입력 문자만을 포함한 스트링으로 변환하기 위한 번역 테이블.
+        else:
+            _input_tbl += "|"
+
+>>>>>>> cliegh/master
     for i in range(256):
         # "a" - "z"
         if (i >= 97) and (i <= 122):
@@ -100,16 +132,24 @@ def init(doWX = True):
         else:
             ch = "z"
 
-        _normalize_tbl += ch
+        _normalize_tbl += ch # 번역 테이블 대문자를 소문자로 소문자는 그대로 소문자로. 그리고 다른 모든것들을 z 로 바꿉니다.
 
+<<<<<<< HEAD
+=======
+    _identity_tbl = "".join([chr(i) for i in range(256)]) # 각 character를 각각에 맵핑시켜주는 정체성 테이블. deleteChar에서 쓰임
+
+>>>>>>> cliegh/master
     if doWX:
         # dunno if the bitmap needs to be big enough to contain the text
         # we're measuring...
+        # dunno == i don't know
+        # 배트맵이 텍스트를 담기에 충분한 크기인지 모르므로 우리가 측정해줘야한다.
         permDc = wx.MemoryDC()
         permDc.SelectObject(wx.EmptyBitmap(512, 32))
 
 # like string.upper/lower/capitalize, but we do our own charset-handling
 # that doesn't need locales etc
+# string.upper/lower/capitalize처럼 우리의 캐릭터셋 핸들링을 위한 것. 로컬이 필요로 하지 않음.
 def upper(s):
     #TODO: Factor this out
     return s.upper()
@@ -121,21 +161,59 @@ def lower(s):
 def capitalize(s):
     return upper(s[:1]) + s[1:]
 
+<<<<<<< HEAD
 # returns True if unichar is a valid character to add to the script.
 def isValidInputChar(unichar):
     return not unicodedata.category(unichar).startswith("C")
 
 # return s with all non-valid input characters removed
+=======
+# return 's', which must be a unicode string, converted to a ISO-8859-1
+# 8-bit string. characters not representable in ISO-8859-1 are discarded.
+# s 를 받아서 s를 리턴해주는데 ISO-8859-1 8bit string으로 바꿔서 리턴한다. 그리고 이것은 유니코드 스트링이어야만 한다.
+# ISO-8859-1 에서 표현할 수 없는 문자는 버려진다.
+def toLatin1(s):
+    return s.encode("ISO-8859-1", "ignore")
+
+# return 's', which must be a string of ISO-8859-1 characters, converted
+# to UTF-8.
+# UTF-8로 변환된 s를 리턴하는데, ISO 8859 형식의 문자열이어야한다.
+def toUTF8(s):
+    return unicode(s, "ISO-8859-1").encode("UTF-8")
+
+# return 's', which must be a string of UTF-8 characters, converted to
+# ISO-8859-1, with characters not representable in ISO-8859-1 discarded
+# and any invalid UTF-8 sequences ignored.
+# utf-8 문자형태의 스트링인 s를 리턴한다. s 는 iso-
+def fromUTF8(s):
+    return s.decode("UTF-8", "ignore").encode("ISO-8859-1", "ignore")
+
+# returns True if kc (key-code) is a valid character to add to the script.
+# 스크립트에 추가하는 key code가 유효한 문자이면 True를 리턴한다.
+def isValidInputChar(kc):
+    # [0x80, 0x9F] = unspecified control characters in ISO-8859-1, added
+    # characters like euro etc in windows-1252. 0x7F = backspace, 0xA0 =
+    # non-breaking space, 0xAD = soft hyphen.
+
+    return (kc >= 32) and (kc <= 255) and not\
+           ((kc >= 0x7F) and (kc < 0xA0)) and (kc != 0xAD)
+
+# return s with all non-valid input characters converted to valid input
+# characters, except form feeds, which are just deleted.
+# 모든 비유효한 인풋 문자열을 유효한 인풋 문자열로 바꿔서 s를 리턴한다. 
+>>>>>>> cliegh/master
 def toInputStr(s):
     #print "toInputStr(%s)" % repr(s)
     return u"".join([unichar for unichar in s if isValidInputChar(unichar)])
 
 # replace fancy unicode characters with their ASCII/Latin1 equivalents.
+# 멋진 유니코드 문자를 ASCII/Latin1로 바꾼다.
 def removeFancyUnicode(s):
     return s.translate(_fancy_unicode_map)
 
 # transform external input (unicode) into a form suitable for having in a
 # script
+# 외부 유니코드 입력을 script에 맞는 형태로 바꾼다.
 def cleanInput(s):
     return toInputStr(removeFancyUnicode(s))
 
@@ -148,7 +226,7 @@ def replace(s, new, start, width):
 def fixNL(s):
     return s.replace("\r\n", "\n").replace("\r", "\n")
 
-# clamps the given value to a specific range. both limits are optional.
+# clamps the given value to a specific range. both limits are optional. 특정 범위로 주어진 값을 고정시킨다. 양쪽의 제한은 선택적이다.
 def clamp(val, minVal = None, maxVal = None):
     ret = val
 

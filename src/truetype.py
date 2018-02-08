@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 import struct
 unpack = struct.unpack
 
@@ -24,12 +25,14 @@ def check(val):
 class Font:
 
     # load font from string s, which is the whole contents of a font file
+    # 폰트 파일의 모든 컨텐츠인 스트링 s로부터 폰트를 불러온다.
     def __init__(self, s):
         # is this a valid font
-        self.ok = False
+        self.ok = False#이건 왜있는거지
 
         # parse functions for tables, and a flag for whether each has been
         # parsed successfully
+        # 테이블을 위한 parse functions, 그리고 각각이 성공적으로 파싱되었는지를 위한 플래그 
         self.parseFuncs = {
             "head" : [self.parseHead, False],
             "name" : [self.parseName, False],
@@ -47,6 +50,7 @@ class Font:
 
     # check if font was parsed correctly. none of the other
     # (user-oriented) functions can be called if this returns False.
+    # 폰트가 올바르게 파싱되었는지 체크한다. 만약 이 리턴이 False이면 유저로부터 나온 다른 기능들은 불러지지 못한다.
     def isOK(self):
         return self.ok
 
@@ -146,4 +150,6 @@ class Font:
         # the font embedding bits are a mess, the meanings have changed
         # over time in the TrueType/OpenType specs. this is the least
         # restrictive interpretation common to them all.
+        # bit에 임베딩한 폰트는 엉망진창이다. truetype 스펙에따라 의미도 시간지남에 바뀌었다. 
+        # 이것은 그들 모두에게 공통된 최소한의 제한된 해석이다 
         self.embeddingOK = (fsType & 0xF) != 2

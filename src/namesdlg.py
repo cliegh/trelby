@@ -1,9 +1,10 @@
+# -*- coding: utf-8 -*-
 import misc
 import namearray
 import util
 
 import wx
-
+# 이름 눌렀을때 나오는 화면
 # NameArray, or None if not loaded
 nameArr = None
 

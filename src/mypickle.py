@@ -1,9 +1,14 @@
+# -*- coding: utf-8 -*-
 import config
 import util
 
 import copy
+# 다양한 변수들(이름이나 숫자들 정보들)
+# 기존에 pickle이라는 라이브러리가 제공된다. https://wikidocs.net/83
+# 복잡한 자료형을 입맛에 맞게 딕셔너리에 담을때 사용하는건데, 트렐비 프로그램에 맞게 짠 코드로 보임.
 
 # keep track about one object's variables
+# 객체의 값들을 추적한다?
 class Vars:
     def __init__(self):
         self.cvars = []
@@ -13,6 +18,7 @@ class Vars:
             yield v
 
     # make various dictionaries pointing to the config variables.
+    # 변수 설정을 위한 다양한 사전 포인팅을 만든다.
     def makeDicts(self):
         self.all = self.getDict()
         self.color = self.getDict(ColorVar)

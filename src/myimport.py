@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import config
 import gutil
 import misc
@@ -18,7 +19,7 @@ SCENE_ACTION = -2
 # special linetype that means don't import those lines; useful for page
 # numbers etc
 IGNORE = -3
-
+# 다른 trelby파일 불러오기
 #like importTextFile, but for Adobe Story files.
 def importAstx(fileName, frame):
     # astx files are xml files. The textlines can be found under
@@ -70,6 +71,7 @@ def importAstx(fileName, frame):
     for para in root.xpath("/AdobeStory/document/stream/section/scene/paragraph"):
         lt = elemMap.get(para.get("element"), screenplay.ACTION)
 
+
         items = []
         s = u""
 
@@ -89,7 +91,7 @@ def importAstx(fileName, frame):
         return None
 
     return lines
-
+# Fadein Files 읽어오기
 # like importTextFile, but for fadein files.
 def importFadein(fileName, frame):
     # Fadein file is a zipped document.xml file.
@@ -299,7 +301,7 @@ def importCeltx(fileName, frame):
         return None
 
     return lines
-
+#FDX파일 읽기
 # like importTextFile, but for Final Draft files.
 def importFDX(fileName, frame):
     elemMap = {
@@ -394,6 +396,7 @@ def importFDX(fileName, frame):
 
 # import Fountain files.
 # http://fountain.io
+#Fountain 파일 읽기
 def importFountain(fileName, frame):
     # regular expressions for fountain markdown.
     # https://github.com/vilcans/screenplain/blob/master/screenplain/richstring.py
@@ -879,7 +882,7 @@ class Indent:
         # likely parentheticals
         self.paren = 0
 
-
+# Import 눌렀을때 화면
 class ImportDlg(wx.Dialog):
     def __init__(self, parent, indents):
         wx.Dialog.__init__(self, parent, -1, "Adjust styles",

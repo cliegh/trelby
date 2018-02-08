@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # see fileformat.txt for more detailed information about the various
 # defines found here.
 
@@ -89,7 +90,7 @@ class TypeInfo:
 
         # textual name, e.g. "Action"
         self.name = name
-
+# 텍스트 타입
 # text type
 class TextType:
     cvars = None
@@ -280,6 +281,7 @@ class Command:
                 self.keys.append(k)
 
 # information about one screen font
+# 폰트정보
 class FontInfo:
     def __init__(self):
         self.font = None
@@ -287,7 +289,7 @@ class FontInfo:
         # font width and height
         self.fx = 1
         self.fy = 1
-
+# PDF 폰트 정보
 # information about one PDF font
 class PDFFontInfo:
     cvars = None
@@ -348,7 +350,7 @@ class PDFFontInfo:
         # font isn't working, put in an arbitrary font name if needed
         if self.filename and not self.pdfName:
             self.pdfName = "SampleFontName"
-
+# 기본 설정.
 # per-script config, each script has its own one of these.
 class Config:
     cvars = None
@@ -585,7 +587,7 @@ class Config:
     def getPDFFontIds(self):
         return (PDF_FONT_NORMAL, PDF_FONT_BOLD, PDF_FONT_ITALIC,
                 PDF_FONT_BOLD_ITALIC)
-
+# 전역 세팅
 # global config. there is only ever one of these active.
 class ConfigGlobal:
     cvars = None
@@ -955,12 +957,6 @@ class ConfigGlobal:
 
             Command("ViewModeLayout", "Change view mode to layout.",
                     isMenu = True),
-
-            Command("ViewModeOverviewLarge", "Change view mode to large"
-                    " overview.", isMenu = True),
-
-            Command("ViewModeOverviewSmall", "Change view mode to small"
-                    " overview.", isMenu = True),
 
             Command("ViewModeSideBySide", "Change view mode to side by"
                     " side.", isMenu = True),

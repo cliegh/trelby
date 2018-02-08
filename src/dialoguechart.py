@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import gutil
 import misc
 import pdf
@@ -6,7 +7,7 @@ import screenplay
 import util
 
 import wx
-
+# 대화 차트. 누가 무슨말을 얼만큼 많이 했는지 보여지는거
 def genDialogueChart(mainFrame, sp):
     # TODO: would be nice if this behaved like the other reports, i.e. the
     # junk below would be inside the class, not outside. this would allow

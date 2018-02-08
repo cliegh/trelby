@@ -1,5 +1,8 @@
+# -*- coding: utf-8 -*-
 import pml
-
+# 글씨체 정보.
+# 캐릭터의 장평은 각 폰트에 대하여 아래와 같이 정의되어 있음.
+# ((width / 1000) * point_size) / 72.0 = 얼마나 인치들이 넓게 퍼졌는지에 대한 정보
 # character widths and general font information for each font. acquired
 # from the PDF font metrics. ((width / 1000) * point_size) / 72.0 = how
 # many inches wide that character is.
@@ -9,6 +12,7 @@ import pml
 # get the FontMetrics object for the given style
 def getMetrics(style):
     # the "& 15" gets rid of the underline flag
+    # and 15는 밑줄 
     return _fontMetrics[style & 15]
 
 class FontMetrics:
@@ -30,7 +34,7 @@ class FontMetrics:
         self.stemV = stemV
         self.stemH = stemH
         self.xHeight = xHeight
-
+    # Wid을 얻어내는법
     # calculate width of 'text' in 'size', and return it in 1/72 inch
     # units.
     def getTextWidth(self, text, size):
@@ -342,7 +346,7 @@ _fontMetrics = {
     500, 500, 500, 500, 500, 500, 500, 675,
     500, 500, 500, 500, 500, 444, 500, 444,
     ]),
-
+    # Font 정보들
     pml.TIMES_ROMAN | pml.BOLD | pml.ITALIC : FontMetrics(
     fontWeight = 700, flags = 98, bbox = (-200, -218, 996, 921),
     italicAngle = -15, ascent = 683, descent = -217, capHeight = 669,

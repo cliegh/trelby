@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import gutil
 import misc
 import util
@@ -8,7 +9,7 @@ import scenereport
 import scriptreport
 
 import wx
-
+#화면상의 메뉴에서 Report 를 담당하는 부분 (통합 부분)
 def genSceneReport(mainFrame, sp):
     report = scenereport.SceneReport(sp)
 
