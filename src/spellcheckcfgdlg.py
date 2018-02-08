@@ -3,7 +3,8 @@ import misc
 import util
 
 import wx
-
+# 스펠체크 딕셔너리에 추가할때 사용하는 메뉴
+# file -> setting 에 보면 spell check dictionary 라는게 있는데, 단어를 추가할 수 있음.
 class SCDictDlg(wx.Dialog):
     def __init__(self, parent, scDict, isGlobal):
         wx.Dialog.__init__(self, parent, -1, "Spell checker dictionary",

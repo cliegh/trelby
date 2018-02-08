@@ -1,6 +1,7 @@
 import mypickle
 import util
-
+# 스크립트를 돌면서 올바르지 않은 스펠링을 찾아 준다
+# 스크립트 상에서 현재 프롬프트가 위치한 곳부터 찾는다
 # words loaded from dict_en.dat.
 gdict = set()
 
@@ -43,6 +44,7 @@ def loadDict(frame):
     return True
 
 # dictionary, a list of known words that the user has specified.
+# 유저가 지정해놓은 알려진 단어들의 리스트를 담고있는 딕셔너리.
 class Dict:
     cvars = None
 
@@ -60,6 +62,8 @@ class Dict:
         # we have wordsList that we use for saving/loading, and words,
         # which we use during normal operation. it's possible we should
         # introduce a mypickle.SetVar...
+        # 우리는 세이브하고 로드하고 우리가 평범한 작업동안 사용할 단어들에대한 단어리스트를 갖고있다.
+        # 우리는 mypickle.SetVar을 도입할 수 있다.
 
         # key = word, lowercased, value = None
         self.words = {}
@@ -129,7 +133,7 @@ class Dict:
 
         return word[0]
 
-# spell check a script
+# spell check a script 스펠체크 스크립트.
 class SpellChecker:
     def __init__(self, sp, gScDict):
         self.sp = sp
@@ -153,6 +157,7 @@ class SpellChecker:
 
     # find next possibly misspelled word and store its location. returns
     # True if such a word found.
+    # 잘못 스펠링될 가능성이 있는 단어를 찾고, 위치를 저장한다. 그런 단어를 찾으면 True를 리턴한다.
     def findNext(self):
         line = self.line
         col = self.col
@@ -160,6 +165,7 @@ class SpellChecker:
         # clear these so there's no chance of them left pointing to
         # something, we return False, and someone tries to access them
         # anyhow.
+        # 다음으로 가르킬 어떠한것도 없으면 False를 리턴한다. 그리고 누구던 어디든 접근할 수 있다.
         self.word = None
         self.line = 0
         self.col = 0
@@ -190,6 +196,7 @@ class SpellChecker:
                word.isdigit()
 
 # Calculates the Levenshtein distance between a and b.
+# http://hsp1116.tistory.com/41 levenshtein 거리 측정.
 def lev(a, b):
     n, m = len(a), len(b)
 
